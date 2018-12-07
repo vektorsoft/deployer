@@ -22,9 +22,11 @@ package com.vektorsoft.xapps.deployer.ctrl
 import com.vektorsoft.xapps.deployer.model.Project
 import com.vektorsoft.xapps.deployer.model.ProjectItemType
 import com.vektorsoft.xapps.deployer.model.RuntimeData
+import com.vektorsoft.xapps.deployer.persist.ProjectPersistenceData
 import com.vektorsoft.xapps.deployer.ui.ProjectTreeCellFactory
 import com.vektorsoft.xapps.deployer.ui.ProjectTreeItem
 import com.vektorsoft.xapps.deployer.ui.UIRegistry
+import javafx.application.Platform
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.collections.ListChangeListener
@@ -62,6 +64,12 @@ class MainPageController : ListChangeListener<Project> {
         root.expandedProperty().set(true)
         projectTree?.root = root
 
+        Platform.runLater {
+            for(project in ProjectPersistenceData.loadProjects()) {
+                projectTree?.root?.children?.add(createProjectNode(project))
+            }
+        }
+
         projectTree?.selectionModel?.selectedItemProperty()?.addListener(object: ChangeListener<TreeItem<ProjectTreeItem>> {
             override fun changed(
                 observable: ObservableValue<out TreeItem<ProjectTreeItem>>?,
@@ -70,8 +78,14 @@ class MainPageController : ListChangeListener<Project> {
             ) {
                 RuntimeData.selectedProjectItem.value = newValue?.value
                 when(newValue?.value?.type) {
-                    ProjectItemType.ROOT -> detailsPane?.center = UIRegistry.getComponent(UIRegistry.START_PANE)
-                    ProjectItemType.PROJECT -> detailsPane?.center = UIRegistry.getComponent(UIRegistry.PROJECT_INFO_PANE)
+                    ProjectItemType.ROOT -> {
+                        detailsPane?.center =  UIRegistry.getComponent(UIRegistry.START_PANE)
+                        detailsPane?.bottom = null
+                    }
+                    ProjectItemType.PROJECT -> {
+                        detailsPane?.center = UIRegistry.getComponent(UIRegistry.PROJECT_INFO_PANE)
+                        detailsPane?.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
+                    }
                 }
             }
         })
@@ -83,6 +97,7 @@ class MainPageController : ListChangeListener<Project> {
         while (change?.next() == true && change?.wasAdded() == true) {
             for(project in (change?.addedSubList ?: emptyList())) {
                 projectTree?.root?.children?.add(createProjectNode(project))
+                ProjectPersistenceData.saveProject(project)
             }
         }
     }
@@ -93,7 +108,8 @@ class MainPageController : ListChangeListener<Project> {
         projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.PLATFORM_DEPENDENCIES, project), pltformDepIcon))
         projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.NATIVE, project),nativeLibIcon))
 
-
         return projectNode
     }
+
+
 }
