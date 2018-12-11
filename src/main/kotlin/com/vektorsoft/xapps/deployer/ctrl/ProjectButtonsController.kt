@@ -17,6 +17,23 @@
  * along with Deployer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.vektorsoft.xapps.deployer.model
+package com.vektorsoft.xapps.deployer.ctrl
 
-enum class ProjectItemType {ROOT, PROJECT, APPLICATION, DEPENDENCIES, PLATFORM_DEPENDENCIES, NATIVE}
+import com.vektorsoft.xapps.deployer.model.RuntimeData
+import com.vektorsoft.xapps.deployer.persist.XMLPersister
+import javafx.fxml.FXML
+import javafx.scene.control.Button
+
+class ProjectButtonsController {
+
+    @FXML
+    private var saveButton : Button? = null
+
+    private var deployButton : Button? = null
+
+    @FXML
+    fun saveProject() {
+        val project = RuntimeData.selectedProjectItem.value.project ?: return
+        XMLPersister.writeProject(project)
+    }
+}

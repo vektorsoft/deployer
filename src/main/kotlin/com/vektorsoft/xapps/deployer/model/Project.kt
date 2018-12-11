@@ -19,12 +19,14 @@
 
 package com.vektorsoft.xapps.deployer.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
 @JacksonXmlRootElement (localName = "project")
 class Project {
 
     var name : String? = null
+    @JsonIgnore
     var location : String? = null
     var dependencyMgmtType : DependencyManagementType? = null
 }

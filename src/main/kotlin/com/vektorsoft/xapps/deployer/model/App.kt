@@ -19,4 +19,10 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-enum class ProjectItemType {ROOT, PROJECT, APPLICATION, DEPENDENCIES, PLATFORM_DEPENDENCIES, NATIVE}
+class App {
+    var name : String = ""
+    var description : String? = null
+
+    var icons : List<BinaryData> = emptyList()
+    var server : Server? = null
+}

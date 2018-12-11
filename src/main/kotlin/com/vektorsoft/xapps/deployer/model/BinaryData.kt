@@ -19,4 +19,6 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-enum class ProjectItemType {ROOT, PROJECT, APPLICATION, DEPENDENCIES, PLATFORM_DEPENDENCIES, NATIVE}
+class BinaryData(val path : String, val fileName : String, val hash : String, val size : Long) {
+
+}

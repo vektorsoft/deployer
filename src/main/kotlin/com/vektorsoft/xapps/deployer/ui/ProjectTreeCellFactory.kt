@@ -37,6 +37,7 @@ class Converter : StringConverter<ProjectTreeItem>() {
     override fun toString(item: ProjectTreeItem?): String {
         when(item?.type) {
             ProjectItemType.ROOT -> return "Projects"
+            ProjectItemType.APPLICATION -> return "Application"
             ProjectItemType.PROJECT -> return item.project?.name ?: "Unknown"
             ProjectItemType.DEPENDENCIES -> return "Dependencies"
             ProjectItemType.PLATFORM_DEPENDENCIES -> return "Platform Dependencies"

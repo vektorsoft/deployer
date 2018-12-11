@@ -24,26 +24,31 @@ import java.util.prefs.Preferences
 
 object ProjectPersistenceData {
 
-    private const val DEPLOYER_PREF_ROOT = "com.vektorsoft.xapps.deployer.pojects"
+    const val DEPLOYER_PREF_ROOT = "com.vektorsoft.xapps.deployer.pojects"
+    const val LOCATION_KEY = "location"
+    const val NAME_KEY = "name"
 
     fun saveProject(project : Project) {
         val rootNode = Preferences.userRoot().node(DEPLOYER_PREF_ROOT)
-        rootNode.put(project.name, project.name)
-        val projectNode = rootNode.node(project.name)
-        projectNode.put("location", project.location)
-        println("Saved project")
+        val projectNode = rootNode.node(escapeSlashes(project.location))
+        projectNode.put(LOCATION_KEY, project.location)
+        projectNode.put(NAME_KEY, project.name)
     }
 
     fun loadProjects() : List<Project> {
         val projects = mutableListOf<Project>()
         val rootNode = Preferences.userRoot().node(DEPLOYER_PREF_ROOT)
-        for(name in rootNode.childrenNames()) {
+        for(location in rootNode.childrenNames()) {
+            val projectNode = rootNode.node(location)
             val project = Project()
-            project.name = name
-            val projectNode = rootNode.node(name)
-            project.location = projectNode.get("location", "")
+            project.location = projectNode.get(LOCATION_KEY, "")
+            project.name = projectNode.get(NAME_KEY, "")
             projects.add(project)
         }
         return projects
+    }
+
+    private fun escapeSlashes(value : String?) : String {
+        return value?.replace("/", "___") ?: ""
     }
 }

@@ -19,4 +19,5 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-enum class ProjectItemType {ROOT, PROJECT, APPLICATION, DEPENDENCIES, PLATFORM_DEPENDENCIES, NATIVE}
+class Server (var baseUrl : String) {
+}

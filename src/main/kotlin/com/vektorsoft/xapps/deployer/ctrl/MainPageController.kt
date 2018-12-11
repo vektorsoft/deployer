@@ -50,6 +50,7 @@ class MainPageController : ListChangeListener<Project> {
     private val dependencyIcon = ImageView(Image(javaClass.getResourceAsStream("/img/dependencies_16x16.png")))
     private val pltformDepIcon = ImageView(Image(javaClass.getResourceAsStream("/img/platform_deps_16x16.png")))
     private val nativeLibIcon = ImageView(Image(javaClass.getResourceAsStream("/img/binary_code_16x16.png")))
+    private val applicationIcon = ImageView(Image(javaClass.getResourceAsStream("/img/software_16x16.png")))
 
     @FXML
     fun initialize() {
@@ -86,6 +87,10 @@ class MainPageController : ListChangeListener<Project> {
                         detailsPane?.center = UIRegistry.getComponent(UIRegistry.PROJECT_INFO_PANE)
                         detailsPane?.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
                     }
+                    ProjectItemType.APPLICATION -> {
+                        detailsPane?.center = UIRegistry.getComponent(UIRegistry.APP_INFO_PANE)
+                        detailsPane?.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
+                    }
                 }
             }
         })
@@ -104,6 +109,7 @@ class MainPageController : ListChangeListener<Project> {
 
     private fun createProjectNode(project : Project) : TreeItem<ProjectTreeItem> {
         val projectNode = TreeItem(ProjectTreeItem(ProjectItemType.PROJECT, project), ImageView(projectIcon))
+        projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.APPLICATION, project), applicationIcon))
         projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.DEPENDENCIES, project), dependencyIcon))
         projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.PLATFORM_DEPENDENCIES, project), pltformDepIcon))
         projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.NATIVE, project),nativeLibIcon))
