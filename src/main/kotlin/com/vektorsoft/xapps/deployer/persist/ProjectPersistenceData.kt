@@ -35,17 +35,18 @@ object ProjectPersistenceData {
         projectNode.put(NAME_KEY, project.name)
     }
 
-    fun loadProjects() : List<Project> {
-        val projects = mutableListOf<Project>()
+    fun loadProjectLocations() : List<String> {
+        val locations = mutableListOf<String>()
         val rootNode = Preferences.userRoot().node(DEPLOYER_PREF_ROOT)
         for(location in rootNode.childrenNames()) {
             val projectNode = rootNode.node(location)
-            val project = Project()
-            project.location = projectNode.get(LOCATION_KEY, "")
-            project.name = projectNode.get(NAME_KEY, "")
-            projects.add(project)
+            val location = projectNode.get(LOCATION_KEY, "")
+            if(location.isNotEmpty()) {
+                locations.add(location)
+            }
+
         }
-        return projects
+        return locations
     }
 
     private fun escapeSlashes(value : String?) : String {

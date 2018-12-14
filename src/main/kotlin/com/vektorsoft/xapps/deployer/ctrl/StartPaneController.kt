@@ -24,16 +24,10 @@ import com.vektorsoft.xapps.deployer.model.RuntimeData
 import com.vektorsoft.xapps.deployer.ui.UIRegistry
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
-import javafx.scene.control.Button
 import javafx.scene.control.ButtonType
 import javafx.scene.control.Dialog
 
 class StartPaneController {
-    @FXML
-    private var newProjectButton : Button? = null
-
-    @FXML
-    private var openProjectButton : Button? = null
 
     @FXML
     fun createProject() {

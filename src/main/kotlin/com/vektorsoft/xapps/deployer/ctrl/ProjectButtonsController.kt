@@ -27,9 +27,9 @@ import javafx.scene.control.Button
 class ProjectButtonsController {
 
     @FXML
-    private var saveButton : Button? = null
+    private lateinit var saveButton : Button
 
-    private var deployButton : Button? = null
+    private lateinit var deployButton : Button
 
     @FXML
     fun saveProject() {

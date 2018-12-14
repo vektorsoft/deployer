@@ -24,6 +24,7 @@ import com.vektorsoft.xapps.deployer.ctrl.NewProjectDialogController
 import com.vektorsoft.xapps.deployer.ctrl.ProjectInfoController
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
+import javafx.stage.Stage
 
 object UIRegistry {
 
@@ -34,7 +35,9 @@ object UIRegistry {
     const val PROJECT_BUTTON_BAR = "project_button_bar"
     const val APP_INFO_PANE = "app_info_pane"
 
+
     private val componentMap = mutableMapOf<String, Parent>()
+    private lateinit var mainWindow : Stage
 
     fun loadComponents() {
         componentMap[START_PANE] = FXMLLoader.load(javaClass.getResource("/fxml/start-pane.fxml"))
@@ -54,4 +57,7 @@ object UIRegistry {
     }
 
     fun getComponent(name : String) : Parent? = componentMap[name]
+
+    fun setMainWindow(stage : Stage) { mainWindow = stage }
+    fun getMainWindow() : Stage =   mainWindow
 }

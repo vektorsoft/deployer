@@ -21,21 +21,39 @@ package com.vektorsoft.xapps.deployer.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
+import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
+import javafx.collections.FXCollections
 
-class App {
-
+class AppInfo {
 
     @JsonIgnore
-    val versionProperty = SimpleStringProperty("")
-    var version : String
-        @JacksonXmlProperty(isAttribute = true) get() = versionProperty.get()
-    set(value) = versionProperty.set(value)
+    val appNameProperty : StringProperty = SimpleStringProperty("")
+    var name : String
+        get() = appNameProperty.get()
+        set(value) = appNameProperty.set(value)
 
-    val info = AppInfo()
+    @JsonIgnore
+    val descriptionProperty = SimpleStringProperty("")
+    var description : String?
+        @JacksonXmlCData get() = descriptionProperty.get()
+        set(value) = descriptionProperty.set(value)
 
-    var server : Server? = null
+    @JsonIgnore
+    val iconsProperty = SimpleListProperty<BinaryData>(FXCollections.observableArrayList())
+    var icons : List<BinaryData>
+    @JacksonXmlElementWrapper(localName = "icons")
+    @JacksonXmlProperty(localName = "icon")
+    get() = iconsProperty.get()
+    set(value)  {
+        iconsProperty.clear()
+        iconsProperty.addAll(value)
+    }
 
+    fun addIcon(icon : BinaryData) {
+        iconsProperty.add(icon)
+    }
 }

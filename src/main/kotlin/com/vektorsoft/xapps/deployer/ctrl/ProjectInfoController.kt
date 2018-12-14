@@ -32,11 +32,11 @@ import javafx.scene.control.TextField
 class ProjectInfoController : ChangeListener<ProjectTreeItem> {
 
     @FXML
-    private var projectNameField : TextField? = null
+    private lateinit var projectNameField : TextField
     @FXML
-    private var projectLocationField : TextField? = null
+    private lateinit var projectLocationField : TextField
     @FXML
-    private var   dependencyCombo : ComboBox<DependencyManagementType>? = null
+    private lateinit var   dependencyCombo : ComboBox<DependencyManagementType>
 
 
     @FXML
@@ -45,8 +45,8 @@ class ProjectInfoController : ChangeListener<ProjectTreeItem> {
     }
 
     override fun changed(observable: ObservableValue<out ProjectTreeItem>?, oldValue: ProjectTreeItem?, newValue: ProjectTreeItem?) {
-        projectNameField?.text = newValue?.project?.name
-        projectLocationField?.text = newValue?.project?.location
-        dependencyCombo?.selectionModel?.select(newValue?.project?.dependencyMgmtType)
+        projectNameField.text = newValue?.project?.name
+        projectLocationField.text = newValue?.project?.location
+        dependencyCombo.selectionModel?.select(newValue?.project?.dependencyMgmtType)
     }
 }

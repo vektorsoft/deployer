@@ -19,6 +19,11 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-class BinaryData(val path : String, val fileName : String, val hash : String, val size : Long) {
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
+
+class BinaryData(@JacksonXmlProperty(isAttribute = true) val path : String = "",
+                 @JacksonXmlProperty(isAttribute = true) val fileName : String = "",
+                 @JacksonXmlProperty(isAttribute = true) val hash : String = "",
+                 @JacksonXmlProperty(isAttribute = true) val size : Long = 0) {
 
 }

@@ -23,6 +23,7 @@ import com.vektorsoft.xapps.deployer.model.Project
 import com.vektorsoft.xapps.deployer.model.ProjectItemType
 import com.vektorsoft.xapps.deployer.model.RuntimeData
 import com.vektorsoft.xapps.deployer.persist.ProjectPersistenceData
+import com.vektorsoft.xapps.deployer.persist.XMLPersister
 import com.vektorsoft.xapps.deployer.ui.ProjectTreeCellFactory
 import com.vektorsoft.xapps.deployer.ui.ProjectTreeItem
 import com.vektorsoft.xapps.deployer.ui.UIRegistry
@@ -40,38 +41,39 @@ import javafx.scene.layout.BorderPane
 class MainPageController : ListChangeListener<Project> {
 
     @FXML
-    private var projectTree : TreeView<ProjectTreeItem>? = null
+    lateinit private var projectTree : TreeView<ProjectTreeItem>
     @FXML
-    private var detailsPane : BorderPane? = null
+    lateinit private var detailsPane : BorderPane
 
     // creadit: <div>Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
     private val treeRootIcon = ImageView(Image(javaClass.getResourceAsStream("/img/applications16x16.png")))
     private val projectIcon = Image(javaClass.getResourceAsStream("/img/structure_16x16.png"))
-    private val dependencyIcon = ImageView(Image(javaClass.getResourceAsStream("/img/dependencies_16x16.png")))
-    private val pltformDepIcon = ImageView(Image(javaClass.getResourceAsStream("/img/platform_deps_16x16.png")))
-    private val nativeLibIcon = ImageView(Image(javaClass.getResourceAsStream("/img/binary_code_16x16.png")))
-    private val applicationIcon = ImageView(Image(javaClass.getResourceAsStream("/img/software_16x16.png")))
+    private val dependencyIcon = Image(javaClass.getResourceAsStream("/img/dependencies_16x16.png"))
+    private val platformDepIcon = Image(javaClass.getResourceAsStream("/img/platform_deps_16x16.png"))
+    private val nativeLibIcon = Image(javaClass.getResourceAsStream("/img/binary_code_16x16.png"))
+    private val applicationIcon = Image(javaClass.getResourceAsStream("/img/software_16x16.png"))
 
     @FXML
     fun initialize() {
         createProjectTree()
-        detailsPane?.center = UIRegistry.getComponent(UIRegistry.START_PANE)
+        detailsPane.center = UIRegistry.getComponent(UIRegistry.START_PANE)
         RuntimeData.projectList.addListener(this)
     }
 
     private fun createProjectTree() {
-        projectTree?.cellFactory = ProjectTreeCellFactory()
+        projectTree.cellFactory = ProjectTreeCellFactory()
         val root = TreeItem<ProjectTreeItem>(ProjectTreeItem(ProjectItemType.ROOT), treeRootIcon)
         root.expandedProperty().set(true)
-        projectTree?.root = root
+        projectTree.root = root
 
         Platform.runLater {
-            for(project in ProjectPersistenceData.loadProjects()) {
-                projectTree?.root?.children?.add(createProjectNode(project))
+            for(location in ProjectPersistenceData.loadProjectLocations()) {
+                val proj = XMLPersister.loadProject(location)
+                projectTree.root?.children?.add(createProjectNode(proj))
             }
         }
 
-        projectTree?.selectionModel?.selectedItemProperty()?.addListener(object: ChangeListener<TreeItem<ProjectTreeItem>> {
+        projectTree.selectionModel?.selectedItemProperty()?.addListener(object: ChangeListener<TreeItem<ProjectTreeItem>> {
             override fun changed(
                 observable: ObservableValue<out TreeItem<ProjectTreeItem>>?,
                 oldValue : TreeItem<ProjectTreeItem>?,
@@ -80,16 +82,16 @@ class MainPageController : ListChangeListener<Project> {
                 RuntimeData.selectedProjectItem.value = newValue?.value
                 when(newValue?.value?.type) {
                     ProjectItemType.ROOT -> {
-                        detailsPane?.center =  UIRegistry.getComponent(UIRegistry.START_PANE)
-                        detailsPane?.bottom = null
+                        detailsPane.center =  UIRegistry.getComponent(UIRegistry.START_PANE)
+                        detailsPane.bottom = null
                     }
                     ProjectItemType.PROJECT -> {
-                        detailsPane?.center = UIRegistry.getComponent(UIRegistry.PROJECT_INFO_PANE)
-                        detailsPane?.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
+                        detailsPane.center = UIRegistry.getComponent(UIRegistry.PROJECT_INFO_PANE)
+                        detailsPane.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
                     }
                     ProjectItemType.APPLICATION -> {
-                        detailsPane?.center = UIRegistry.getComponent(UIRegistry.APP_INFO_PANE)
-                        detailsPane?.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
+                        detailsPane.center = UIRegistry.getComponent(UIRegistry.APP_INFO_PANE)
+                        detailsPane.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
                     }
                 }
             }
@@ -99,9 +101,9 @@ class MainPageController : ListChangeListener<Project> {
 
 
     override fun onChanged(change: ListChangeListener.Change<out Project>?) {
-        while (change?.next() == true && change?.wasAdded() == true) {
-            for(project in (change?.addedSubList ?: emptyList())) {
-                projectTree?.root?.children?.add(createProjectNode(project))
+        while (change?.next() == true && change.wasAdded() == true) {
+            for(project in (change.addedSubList ?: emptyList())) {
+                projectTree.root?.children?.add(createProjectNode(project))
                 ProjectPersistenceData.saveProject(project)
             }
         }
@@ -109,10 +111,10 @@ class MainPageController : ListChangeListener<Project> {
 
     private fun createProjectNode(project : Project) : TreeItem<ProjectTreeItem> {
         val projectNode = TreeItem(ProjectTreeItem(ProjectItemType.PROJECT, project), ImageView(projectIcon))
-        projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.APPLICATION, project), applicationIcon))
-        projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.DEPENDENCIES, project), dependencyIcon))
-        projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.PLATFORM_DEPENDENCIES, project), pltformDepIcon))
-        projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.NATIVE, project),nativeLibIcon))
+        projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.APPLICATION, project), ImageView(applicationIcon)))
+        projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.DEPENDENCIES, project), ImageView(dependencyIcon)))
+        projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.PLATFORM_DEPENDENCIES, project), ImageView(platformDepIcon)))
+        projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.NATIVE, project), ImageView(nativeLibIcon)))
 
         return projectNode
     }

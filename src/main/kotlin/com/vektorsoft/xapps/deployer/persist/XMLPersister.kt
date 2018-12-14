@@ -19,7 +19,9 @@
 
 package com.vektorsoft.xapps.deployer.persist
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationConfig
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.vektorsoft.xapps.deployer.model.Project
@@ -33,10 +35,19 @@ object XMLPersister {
     init {
         objectMapper = XmlMapper()
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT)
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
     }
 
     fun writeProject(project: Project) {
         val filePath = Path.of(project.location, PROJECT_FILE_NAME)
         objectMapper.writeValue(filePath.toFile(), project)
+    }
+
+    fun loadProject(projectDirectory : String) : Project {
+        val projectFilePath = Path.of(projectDirectory, PROJECT_FILE_NAME)
+        val project = objectMapper.readValue<Project>(projectFilePath.toFile(), Project::class.java)
+        project.location = projectDirectory
+        return project
     }
 }

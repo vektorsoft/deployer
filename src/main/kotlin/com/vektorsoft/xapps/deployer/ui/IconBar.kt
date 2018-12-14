@@ -17,25 +17,26 @@
  * along with Deployer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.vektorsoft.xapps.deployer.model
+package com.vektorsoft.xapps.deployer.ui
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
-import javafx.beans.property.SimpleStringProperty
-import javafx.beans.property.StringProperty
+import javafx.geometry.Pos
+import javafx.scene.control.Button
+import javafx.scene.control.TextField
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
+import javafx.scene.layout.HBox
+import java.io.File
 
-class App {
+class IconBar(iconFile : File) : HBox(15.0) {
 
-
-    @JsonIgnore
-    val versionProperty = SimpleStringProperty("")
-    var version : String
-        @JacksonXmlProperty(isAttribute = true) get() = versionProperty.get()
-    set(value) = versionProperty.set(value)
-
-    val info = AppInfo()
-
-    var server : Server? = null
-
+    init {
+        alignment = Pos.CENTER_LEFT
+        children.add(ImageView(Image(iconFile.inputStream(), 32.0, 32.0, false, false)))
+        val pathField = TextField(iconFile.absolutePath)
+        pathField.editableProperty().set(false)
+        pathField.autosize()
+        children.add(pathField)
+        val removeButton = Button("Remove")
+        children.add(removeButton)
+    }
 }

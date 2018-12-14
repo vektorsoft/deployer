@@ -30,16 +30,16 @@ import javafx.util.Callback
 class NewProjectDialogController {
 
     @FXML
-    private var projectNameField : TextField? = null
+    private lateinit  var projectNameField : TextField
     @FXML
-    private var projectLocationField : TextField? = null
+    private lateinit var projectLocationField : TextField
     @FXML
-    private var dependencyCombo : ComboBox<DependencyManagementType>? = null
+    private lateinit var dependencyCombo : ComboBox<DependencyManagementType>
 
     @FXML
     fun initialize() {
-        dependencyCombo?.items?.addAll(DependencyManagementType.values())
-        dependencyCombo?.selectionModel?.selectFirst()
+        dependencyCombo.items?.addAll(DependencyManagementType.values())
+        dependencyCombo.selectionModel?.selectFirst()
     }
 
     fun getResultConverter() : Callback<ButtonType, Project?> {
@@ -54,14 +54,14 @@ class NewProjectDialogController {
     }
 
     fun validateInput() : Boolean {
-        return (projectLocationField?.text?.isNotEmpty() == true && projectNameField?.text?.isNotEmpty() == true)
+        return (projectLocationField.text?.isNotEmpty() == true && projectNameField?.text?.isNotEmpty() == true)
     }
 
     private fun createProject() : Project {
          val project = Project()
-        project.name = projectNameField?.text
-        project.location = projectLocationField?.text
-        project.dependencyMgmtType = dependencyCombo?.selectionModel?.selectedItem
+        project.name = projectNameField.text
+        project.location = projectLocationField.text
+        project.dependencyMgmtType = dependencyCombo.selectionModel?.selectedItem
         return project
     }
 

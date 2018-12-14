@@ -74,7 +74,7 @@ class ProjectPersistenseDataTest {
         ProjectPersistenceData.saveProject(project1)
         ProjectPersistenceData.saveProject(project2)
 
-        val list = ProjectPersistenceData.loadProjects()
+        val list = ProjectPersistenceData.loadProjectLocations()
         assertEquals(2, list.size)
     }
 

@@ -29,4 +29,6 @@ class Project {
     @JsonIgnore
     var location : String? = null
     var dependencyMgmtType : DependencyManagementType? = null
+
+    var application : App = App()
 }

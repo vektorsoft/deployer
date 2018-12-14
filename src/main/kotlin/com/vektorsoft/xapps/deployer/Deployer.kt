@@ -26,6 +26,7 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
+import java.lang.Exception
 
 
 class Deployer : Application() {
@@ -33,11 +34,12 @@ class Deployer : Application() {
     override fun start(stage : Stage?) {
         ControllerRegistry.registerControllers()
         UIRegistry.loadComponents()
+        UIRegistry.setMainWindow(stage ?: throw Exception("Stage can not be null"))
 
         val scene = Scene(UIRegistry.getComponent(UIRegistry.MAIN_PAGE), 800.0, 600.0)
-        stage?.title = "Deployer"
-        stage?.scene = scene
-        stage?.show()
+        stage.title = "Deployer"
+        stage.scene = scene
+        stage.show()
     }
 }
 
