@@ -25,6 +25,7 @@ import com.vektorsoft.xapps.deployer.ctrl.ProjectInfoController
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.stage.Stage
+import java.util.*
 
 object UIRegistry {
 
@@ -40,9 +41,10 @@ object UIRegistry {
     private lateinit var mainWindow : Stage
 
     fun loadComponents() {
-        componentMap[START_PANE] = FXMLLoader.load(javaClass.getResource("/fxml/start-pane.fxml"))
-        loadWithController("/fxml/new-project-dlg.fxml", NewProjectDialogController::class.java, NEW_PROJECT_DLG)
-        loadWithController("/fxml/project-info.fxml", ProjectInfoController::class.java, PROJECT_INFO_PANE)
+        val bundle = ResourceBundle.getBundle("i18n/strings")
+        componentMap[START_PANE] = FXMLLoader.load(javaClass.getResource("/fxml/start-pane.fxml"), bundle)
+        loadWithController("/fxml/new-project-dlg.fxml", NewProjectDialogController::class.java, NEW_PROJECT_DLG, bundle)
+        loadWithController("/fxml/project-info.fxml", ProjectInfoController::class.java, PROJECT_INFO_PANE, bundle)
         componentMap[PROJECT_BUTTON_BAR] = FXMLLoader.load(javaClass.getResource("/fxml/project-button-bar.fxml"))
         componentMap[APP_INFO_PANE] = FXMLLoader.load(javaClass.getResource("/fxml/app-info.fxml"))
 
@@ -50,9 +52,11 @@ object UIRegistry {
         componentMap[MAIN_PAGE] = FXMLLoader.load<Parent>(javaClass.getResource("/fxml/main.fxml"))
     }
 
-    private fun <T> loadWithController(fxmlFile : String, clazz : Class<T>, key : String) {
+    private fun <T> loadWithController(fxmlFile : String, clazz : Class<T>, key : String, bundle : ResourceBundle) {
         val loader = FXMLLoader(javaClass.getResource(fxmlFile))
+        loader.resources = bundle
         loader.setController(ControllerRegistry.getController(clazz))
+
         componentMap[key] = loader.load()
     }
 

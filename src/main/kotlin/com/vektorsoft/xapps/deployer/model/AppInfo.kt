@@ -56,4 +56,9 @@ class AppInfo {
     fun addIcon(icon : BinaryData) {
         iconsProperty.add(icon)
     }
+
+    fun removeIcon(path : String) {
+        val toRemove = iconsProperty.find { it.path == path }
+        iconsProperty.remove(toRemove)
+    }
 }

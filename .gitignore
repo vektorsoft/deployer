@@ -37,3 +37,5 @@ target/
 *.iml
 
 deployer-config.xml
+data/
+*.DS_Store

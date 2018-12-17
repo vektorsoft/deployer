@@ -19,6 +19,7 @@
 
 package com.vektorsoft.xapps.deployer.ctrl
 
+import com.vektorsoft.xapps.deployer.filePathRelative
 import com.vektorsoft.xapps.deployer.model.BinaryData
 import com.vektorsoft.xapps.deployer.model.ProjectItemType
 import com.vektorsoft.xapps.deployer.model.RuntimeData
@@ -69,7 +70,7 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
             appVersionField.textProperty().bindBidirectional(newValue.project?.application?.versionProperty)
             appDescriptionArea.textProperty().bindBidirectional(newValue.project?.application?.info?.descriptionProperty)
             for(binData in newValue.project?.application?.info?.icons ?: return) {
-                iconsBarArea.children.add(IconBar(File(binData.path)))
+                iconsBarArea.children.add(IconBar(binData.path, newValue.project?.location ?: "", iconsBarArea))
             }
         }
     }
@@ -81,10 +82,11 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
         fileChooser.initialDirectory = File(RuntimeData.selectedProjectItem.get().project?.location)
         fileChooser.extensionFilters.addAll(iconExtensionFilters())
         val selectedFiles = fileChooser.showOpenMultipleDialog(UIRegistry.getMainWindow())
+        val projectLocation = RuntimeData.selectedProjectItem.get().project?.location ?: ""
 
         for(file in selectedFiles ?: return) {
-            iconsBarArea.children.add(IconBar(file))
-            RuntimeData.selectedProjectItem.get().project?.application?.info?.addIcon(BinaryData(file.absolutePath, file.name, "123334455", file.length()))
+            iconsBarArea.children.add(IconBar(file.absolutePath, projectLocation, iconsBarArea))
+            RuntimeData.selectedProjectItem.get().project?.application?.info?.addIcon(BinaryData(filePathRelative(file.absolutePath, projectLocation), file.name, "123334455", file.length()))
         }
     }
 
