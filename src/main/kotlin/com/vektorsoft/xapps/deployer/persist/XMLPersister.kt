@@ -23,7 +23,10 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationConfig
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.jsontype.NamedType
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import com.vektorsoft.xapps.deployer.model.BinaryData
+import com.vektorsoft.xapps.deployer.model.MavenDependency
 import com.vektorsoft.xapps.deployer.model.Project
 import java.nio.file.Path
 
@@ -37,6 +40,11 @@ object XMLPersister {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT)
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+        // register types
+        objectMapper.registerSubtypes(
+            NamedType(BinaryData::class.java, "icon"),
+            NamedType(MavenDependency::class.java, "dependency")
+        )
     }
 
     fun writeProject(project: Project) {

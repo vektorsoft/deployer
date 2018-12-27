@@ -19,6 +19,7 @@
 
 package com.vektorsoft.xapps.deployer.ctrl
 
+import com.vektorsoft.xapps.deployer.maven.MavenHandler
 import com.vektorsoft.xapps.deployer.model.Project
 import com.vektorsoft.xapps.deployer.model.ProjectItemType
 import com.vektorsoft.xapps.deployer.model.RuntimeData
@@ -91,6 +92,10 @@ class MainPageController : ListChangeListener<Project> {
                     }
                     ProjectItemType.APPLICATION -> {
                         detailsPane.center = UIRegistry.getComponent(UIRegistry.APP_INFO_PANE)
+                        detailsPane.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
+                    }
+                    ProjectItemType.DEPENDENCIES -> {
+                        detailsPane.center = UIRegistry.getComponent(UIRegistry.DEPENDENCY_INFO_PANE)
                         detailsPane.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
                     }
                 }

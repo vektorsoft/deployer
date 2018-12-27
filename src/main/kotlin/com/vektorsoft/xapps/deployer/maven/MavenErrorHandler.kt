@@ -17,26 +17,13 @@
  * along with Deployer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.vektorsoft.xapps.deployer.model
+package com.vektorsoft.xapps.deployer.maven
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
-import javafx.beans.property.SimpleStringProperty
-import javafx.beans.property.StringProperty
+import org.apache.maven.shared.invoker.PrintStreamHandler
 
-class App {
+class MavenErrorHandler : PrintStreamHandler() {
 
-
-    @JsonIgnore
-    val versionProperty = SimpleStringProperty("")
-    var version : String
-        @JacksonXmlProperty(isAttribute = true) get() = versionProperty.get()
-    set(value) = versionProperty.set(value)
-
-    val info = AppInfo()
-    val jvm = Jvm()
-
-    var server : Server? = null
-
+    override fun consumeLine(line: String?) {
+        println("error line: $line")
+    }
 }

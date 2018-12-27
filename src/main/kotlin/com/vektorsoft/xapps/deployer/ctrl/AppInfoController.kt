@@ -84,6 +84,7 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
         val selectedFiles = fileChooser.showOpenMultipleDialog(UIRegistry.getMainWindow())
         val projectLocation = RuntimeData.selectedProjectItem.get().project?.location ?: ""
 
+
         for(file in selectedFiles ?: return) {
             iconsBarArea.children.add(IconBar(file.absolutePath, projectLocation, iconsBarArea))
             RuntimeData.selectedProjectItem.get().project?.application?.info?.addIcon(BinaryData(filePathRelative(file.absolutePath, projectLocation), file.name, "123334455", file.length()))
@@ -98,4 +99,5 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
             FileChooser.ExtensionFilter("ICNS", "*.icns")
         )
     }
+
 }

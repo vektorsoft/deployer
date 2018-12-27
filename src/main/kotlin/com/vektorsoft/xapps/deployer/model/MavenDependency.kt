@@ -19,24 +19,9 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
-import javafx.beans.property.SimpleStringProperty
-import javafx.beans.property.StringProperty
-
-class App {
+class MavenDependency(val groupId : String,val artifactId : String,val version : String,val packaging : String,val classifier : String?, name : String,  fileHash : String,  fileSize : Long)
+    : BinaryData(fileName = name,hash = fileHash, size = fileSize) {
 
 
-    @JsonIgnore
-    val versionProperty = SimpleStringProperty("")
-    var version : String
-        @JacksonXmlProperty(isAttribute = true) get() = versionProperty.get()
-    set(value) = versionProperty.set(value)
-
-    val info = AppInfo()
-    val jvm = Jvm()
-
-    var server : Server? = null
 
 }

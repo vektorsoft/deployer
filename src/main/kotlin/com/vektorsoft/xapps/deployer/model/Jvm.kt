@@ -20,23 +20,19 @@
 package com.vektorsoft.xapps.deployer.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
-import javafx.beans.property.SimpleStringProperty
-import javafx.beans.property.StringProperty
+import javafx.beans.property.SimpleListProperty
+import javafx.collections.FXCollections
 
-class App {
-
+class Jvm(@JacksonXmlProperty(localName = "version", isAttribute = true) val version : String = "8") {
 
     @JsonIgnore
-    val versionProperty = SimpleStringProperty("")
-    var version : String
-        @JacksonXmlProperty(isAttribute = true) get() = versionProperty.get()
-    set(value) = versionProperty.set(value)
-
-    val info = AppInfo()
-    val jvm = Jvm()
-
-    var server : Server? = null
-
+    val dependenciesProperty = SimpleListProperty<BinaryData>(FXCollections.observableArrayList())
+    var dependencies : List<BinaryData>
+    get() = dependenciesProperty.get()
+    set(value)  {
+        dependenciesProperty.clear()
+        dependenciesProperty.addAll(value)
+    }
 }
