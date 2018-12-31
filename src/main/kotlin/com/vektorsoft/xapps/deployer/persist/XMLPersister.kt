@@ -19,43 +19,45 @@
 
 package com.vektorsoft.xapps.deployer.persist
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationConfig
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.databind.jsontype.NamedType
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import com.vektorsoft.xapps.deployer.model.BinaryData
-import com.vektorsoft.xapps.deployer.model.MavenDependency
 import com.vektorsoft.xapps.deployer.model.Project
 import java.nio.file.Path
+import javax.xml.bind.JAXBContext
+import javax.xml.bind.Marshaller
 
 object XMLPersister {
 
     private const val PROJECT_FILE_NAME = "deployer-config.xml"
-    private val objectMapper : ObjectMapper
+//    private val objectMapper : ObjectMapper
 
-    init {
-        objectMapper = XmlMapper()
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT)
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
-        // register types
-        objectMapper.registerSubtypes(
-            NamedType(BinaryData::class.java, "icon"),
-            NamedType(MavenDependency::class.java, "dependency")
-        )
-    }
+//    init {
+//        objectMapper = XmlMapper()
+//        objectMapper.enable(SerializationFeature.INDENT_OUTPUT)
+//        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+//        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+//        // register types
+//        objectMapper.registerSubtypes(
+//            NamedType(BinaryData::class.java, "icon"),
+//            NamedType(MavenDependency::class.java, "dependency")
+//        )
+//    }
 
     fun writeProject(project: Project) {
+        val ctx = JAXBContext.newInstance(Project::class.java)
+        val marshaller = ctx.createMarshaller()
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
+
         val filePath = Path.of(project.location, PROJECT_FILE_NAME)
-        objectMapper.writeValue(filePath.toFile(), project)
+        marshaller.marshal(project, filePath.toFile())
     }
 
     fun loadProject(projectDirectory : String) : Project {
         val projectFilePath = Path.of(projectDirectory, PROJECT_FILE_NAME)
-        val project = objectMapper.readValue<Project>(projectFilePath.toFile(), Project::class.java)
-        project.location = projectDirectory
-        return project
+        val ctx = JAXBContext.newInstance(Project::class.java)
+        val unmarshaller = ctx.createUnmarshaller()
+        projectFilePath.toFile().inputStream().use {
+            val project = unmarshaller.unmarshal(it) as Project
+            project.location = projectDirectory
+            return project
+        }
     }
 }

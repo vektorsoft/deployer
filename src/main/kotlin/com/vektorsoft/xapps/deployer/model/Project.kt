@@ -19,15 +19,21 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
+import javax.xml.bind.annotation.XmlAccessType
+import javax.xml.bind.annotation.XmlAccessorType
+import javax.xml.bind.annotation.XmlRootElement
+import javax.xml.bind.annotation.XmlTransient
 
-@JacksonXmlRootElement (localName = "project")
+@XmlRootElement(name = "project")
+@XmlAccessorType(XmlAccessType.FIELD)
 class Project {
 
     var name : String? = null
-    @JsonIgnore
+    @XmlTransient
     var location : String? = null
+
+    @XmlTransient
+    var synced : Boolean = false
     var dependencyMgmtType : DependencyManagementType? = null
 
     var application : App = App()

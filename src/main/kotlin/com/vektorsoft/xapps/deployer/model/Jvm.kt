@@ -19,20 +19,22 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import javafx.beans.property.SimpleListProperty
 import javafx.collections.FXCollections
+import javax.xml.bind.annotation.*
 
-class Jvm(@JacksonXmlProperty(localName = "version", isAttribute = true) val version : String = "8") {
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlSeeAlso(MavenDependency::class)
+class Jvm(@XmlAttribute val version : String = "8") {
 
-    @JsonIgnore
+    @XmlTransient
     val dependenciesProperty = SimpleListProperty<BinaryData>(FXCollections.observableArrayList())
     var dependencies : List<BinaryData>
-    get() = dependenciesProperty.get()
+    @XmlElementWrapper(name = "dependencies") @XmlElement(name = "dependency") get() = dependenciesProperty.get()
     set(value)  {
         dependenciesProperty.clear()
         dependenciesProperty.addAll(value)
     }
+
+    fun addDependency(dependency : BinaryData) = dependenciesProperty.add(dependency)
 }

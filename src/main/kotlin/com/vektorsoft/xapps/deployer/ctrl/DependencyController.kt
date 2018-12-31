@@ -40,15 +40,15 @@ import javafx.scene.layout.HBox
 class DependencyController : ChangeListener<ProjectTreeItem> {
 
     @FXML
-    private lateinit var progressPane : BorderPane
+    private lateinit var progressPane: BorderPane
     @FXML
-    private lateinit var dependenciesPane : ScrollPane
+    private lateinit var dependenciesPane: ScrollPane
     @FXML
-    private lateinit var syncProgressIndicator : ProgressIndicator
+    private lateinit var syncProgressIndicator: ProgressIndicator
     @FXML
-    private lateinit var dependencyTable : TableView<MavenDependency>
+    private lateinit var dependencyTable: TableView<MavenDependency>
     @FXML
-    private lateinit var buttonBar : HBox
+    private lateinit var buttonBar: HBox
 
     private val taskStatusProperty = SimpleBooleanProperty()
 
@@ -56,35 +56,51 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
     fun initialize() {
         RuntimeData.selectedProjectItem.addListener(this)
         progressPane.toBack()
+        dependenciesPane.isVisible = true
     }
 
-    override fun changed(observable: ObservableValue<out ProjectTreeItem>?, oldItem: ProjectTreeItem?, newItem: ProjectTreeItem?) {
+    override fun changed(
+        observable: ObservableValue<out ProjectTreeItem>?,
+        oldItem: ProjectTreeItem?,
+        newItem: ProjectTreeItem?
+    ) {
         val project = newItem?.project ?: return
-        if(newItem?.type == ProjectItemType.DEPENDENCIES && project.application.jvm.dependencies.isEmpty()) {
-            if(!taskStatusProperty.value) {
-                val task = DependencySyncTask(project)
-                taskStatusProperty.bind(task.runningProperty())
-                syncProgressIndicator.progressProperty().bind(task.progressProperty())
-                Thread(task).start()
-                task.stateProperty().addListener { observableValue, oldState, newState ->
-                    when(newState) {
-                        Worker.State.RUNNING -> {
-                            progressPane.toFront()
-                            dependenciesPane.isVisible = false
-                            buttonBar.isVisible = false
-                        }
-                        Worker.State.SUCCEEDED -> {
-                            fillDependencyTable(project)
-                            dependenciesPane.toFront()
-                            dependenciesPane.isVisible = true
-                            buttonBar.isVisible = true
-                        }
+        if (newItem?.type == ProjectItemType.DEPENDENCIES) {
+            syncDependencies(project)
+        }
+    }
 
+    private fun syncDependencies(project: Project) {
+        if (!project.synced) {
+            syncFromPom(project)
+        } else {
+            fillDependencyTable(project)
+        }
+    }
+
+    private fun syncFromPom(project: Project) {
+        if (!taskStatusProperty.value) {
+            val task = DependencySyncTask(project)
+            taskStatusProperty.bind(task.runningProperty())
+            syncProgressIndicator.progressProperty().bind(task.progressProperty())
+            Thread(task).start()
+            task.stateProperty().addListener { observableValue, oldState, newState ->
+                when (newState) {
+                    Worker.State.RUNNING -> {
+                        progressPane.toFront()
+                        dependenciesPane.isVisible = false
+                        buttonBar.isVisible = false
                     }
+                    Worker.State.SUCCEEDED -> {
+                        fillDependencyTable(project)
+                        dependenciesPane.toFront()
+                        dependenciesPane.isVisible = true
+                        buttonBar.isVisible = true
+                        project.synced = true
+                    }
+
                 }
             }
-
-
         }
     }
 

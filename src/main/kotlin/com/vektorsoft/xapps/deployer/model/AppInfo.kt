@@ -19,34 +19,33 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
+import com.sun.xml.txw2.annotation.XmlCDATA
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.collections.FXCollections
+import javax.xml.bind.annotation.*
 
+@XmlAccessorType(XmlAccessType.PROPERTY)
 class AppInfo {
 
-    @JsonIgnore
+    @XmlTransient
     val appNameProperty : StringProperty = SimpleStringProperty("")
     var name : String
         get() = appNameProperty.get()
         set(value) = appNameProperty.set(value)
 
-    @JsonIgnore
+    @XmlTransient
     val descriptionProperty = SimpleStringProperty("")
     var description : String?
-        @JacksonXmlCData get() = descriptionProperty.get()
+        @XmlCDATA get() = descriptionProperty.get()
         set(value) = descriptionProperty.set(value)
 
-    @JsonIgnore
+    @XmlTransient
     val iconsProperty = SimpleListProperty<BinaryData>(FXCollections.observableArrayList())
     var icons : List<BinaryData>
-    @JacksonXmlElementWrapper(localName = "icons")
-    @JacksonXmlProperty(localName = "icon")
+    @XmlElementWrapper(name = "icons")
+    @XmlElement(name = "icon")
     get() = iconsProperty.get()
     set(value)  {
         iconsProperty.clear()

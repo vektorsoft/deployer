@@ -19,9 +19,16 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-class MavenDependency(val groupId : String,val artifactId : String,val version : String,val packaging : String,val classifier : String?, name : String,  fileHash : String,  fileSize : Long)
+import javax.xml.bind.annotation.XmlAccessType
+import javax.xml.bind.annotation.XmlAccessorType
+import javax.xml.bind.annotation.XmlAttribute
+
+@XmlAccessorType(XmlAccessType.FIELD)
+class MavenDependency(@XmlAttribute var groupId : String = "",
+                      @XmlAttribute var artifactId : String = "",
+                      @XmlAttribute var version : String = "",
+                      @XmlAttribute var packaging : String = "jar",
+                      @XmlAttribute var classifier : String? = null, name : String = "", fileHash : String = "", fileSize : Long = 0)
     : BinaryData(fileName = name,hash = fileHash, size = fileSize) {
-
-
 
 }

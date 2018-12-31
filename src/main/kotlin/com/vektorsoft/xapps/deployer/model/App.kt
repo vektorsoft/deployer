@@ -19,19 +19,20 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.beans.property.StringProperty
+import javax.xml.bind.annotation.XmlAccessType
+import javax.xml.bind.annotation.XmlAccessorType
+import javax.xml.bind.annotation.XmlAttribute
+import javax.xml.bind.annotation.XmlTransient
 
+@XmlAccessorType(XmlAccessType.FIELD)
 class App {
 
 
-    @JsonIgnore
+    @XmlTransient
     val versionProperty = SimpleStringProperty("")
     var version : String
-        @JacksonXmlProperty(isAttribute = true) get() = versionProperty.get()
+        @XmlAttribute get() = versionProperty.get()
     set(value) = versionProperty.set(value)
 
     val info = AppInfo()
