@@ -25,12 +25,10 @@ import javax.xml.bind.annotation.adapters.XmlAdapter
 class StringAdapter : XmlAdapter<String, String>() {
 
     override fun marshal(value : String?): String?  {
-        println("marshalling: $value")
         return if(value == "") null else value
     }
 
     override fun unmarshal(value: String?): String {
-        println("unmarshalling: $value")
         return value ?: "";
     }
 }

@@ -28,10 +28,8 @@ import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.concurrent.Worker
 import javafx.fxml.FXML
-import javafx.scene.control.ProgressIndicator
-import javafx.scene.control.ScrollPane
-import javafx.scene.control.TableColumn
-import javafx.scene.control.TableView
+import javafx.scene.control.*
+import javafx.scene.control.cell.ComboBoxTableCell
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
@@ -57,6 +55,8 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
         RuntimeData.selectedProjectItem.addListener(this)
         progressPane.toBack()
         dependenciesPane.isVisible = true
+        dependencyTable.selectionModel.selectionMode = SelectionMode.MULTIPLE
+        dependencyTable.isEditable = true
     }
 
     override fun changed(
@@ -113,9 +113,16 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
         artifactCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("artifactId")
         val versionCol = TableColumn<MavenDependency, String>("Version")
         versionCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("version")
+        val packagingCol = TableColumn<MavenDependency, String>("Packaging")
+        packagingCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("packaging")
+        val classifierCol = TableColumn<MavenDependency, String>("Classifier")
+        classifierCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("classifier")
+        val scopeCol = TableColumn<MavenDependency, JvmDependencyScope>("Scope")
+        scopeCol.setCellValueFactory { it -> it.value.scopeProperty }
+        scopeCol.cellFactory = ComboBoxTableCell.forTableColumn(JvmDependencyScope.CLASSPATH, JvmDependencyScope.MODULE_PATH)
         dependencyTable.columns.clear()
 
-        dependencyTable.columns.addAll(groupCol, artifactCol, versionCol)
+        dependencyTable.columns.addAll(groupCol, artifactCol, versionCol, packagingCol, classifierCol, scopeCol)
         dependencyTable.items = FXCollections.observableList(deps.map { it as MavenDependency })
 
     }

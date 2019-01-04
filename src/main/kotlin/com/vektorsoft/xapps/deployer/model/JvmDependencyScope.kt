@@ -19,23 +19,7 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-import javax.xml.bind.annotation.XmlAccessType
-import javax.xml.bind.annotation.XmlAccessorType
-import javax.xml.bind.annotation.XmlRootElement
-import javax.xml.bind.annotation.XmlTransient
+enum class JvmDependencyScope {
 
-@XmlRootElement(name = "project")
-@XmlAccessorType(XmlAccessType.FIELD)
-class Project {
-
-    var name : String? = null
-    @XmlTransient
-    var location : String? = null
-
-    @XmlTransient
-    var synced : Boolean = false
-    var dependencyMgmtType : DependencyManagementType? = null
-
-    var application : App = App()
-
+    CLASSPATH, MODULE_PATH
 }

@@ -19,23 +19,23 @@
 
 package com.vektorsoft.xapps.deployer.model
 
+import javafx.beans.property.SimpleObjectProperty
 import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
-import javax.xml.bind.annotation.XmlRootElement
+import javax.xml.bind.annotation.XmlAttribute
 import javax.xml.bind.annotation.XmlTransient
 
-@XmlRootElement(name = "project")
 @XmlAccessorType(XmlAccessType.FIELD)
-class Project {
-
-    var name : String? = null
-    @XmlTransient
-    var location : String? = null
+open class JvmDependency : BinaryData  {
 
     @XmlTransient
-    var synced : Boolean = false
-    var dependencyMgmtType : DependencyManagementType? = null
+    val scopeProperty = SimpleObjectProperty<JvmDependencyScope>()
 
-    var application : App = App()
+    var scope : JvmDependencyScope
+    @XmlAttribute get() = scopeProperty.get()
+    set(value) = scopeProperty.set(value)
 
+    constructor(fileName : String, path : String, hash : String, size : Long, scope : JvmDependencyScope)  : super(fileName = fileName, path = path, hash = hash, size = size ) {
+        this.scope = scope
+    }
 }

@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableView?>
@@ -43,7 +45,13 @@
       <HBox fx:id="buttonBar" alignment="CENTER" prefWidth="200.0" spacing="10.0">
          <children>
             <Button mnemonicParsing="false" text="Remove" />
-            <Button mnemonicParsing="false" text="Move to Platform" />
+            <MenuButton disable="true" mnemonicParsing="false" text="Platform">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Windows" />
+                <MenuItem mnemonicParsing="false" text="Mac OS X" />
+                  <MenuItem mnemonicParsing="false" text="Linux" />
+              </items>
+            </MenuButton>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

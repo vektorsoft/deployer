@@ -22,6 +22,7 @@ package com.vektorsoft.xapps.deployer.maven
 import com.vektorsoft.xapps.deployer.calculateFileHash
 import com.vektorsoft.xapps.deployer.getLocalMavenRepoDir
 import com.vektorsoft.xapps.deployer.logger
+import com.vektorsoft.xapps.deployer.model.JvmDependencyScope
 import com.vektorsoft.xapps.deployer.model.MavenDependency
 import com.vektorsoft.xapps.deployer.model.Project
 import org.apache.maven.shared.invoker.DefaultInvocationRequest
@@ -122,7 +123,7 @@ object MavenHandler {
             val name = createFileName(artifactId, version, classifier, packaging)
             logger.debug("Found dependency file at ${file.absolutePath}")
             val hash = calculateFileHash(file) ?: "unknown"
-            return MavenDependency(groupId, artifactId, version, packaging, classifier, name, hash , file.length())
+            return MavenDependency(groupId, artifactId, version, packaging, classifier, name, hash , file.length(), findDependencyScope(groupId, artifactId, version, packaging, classifier, project))
         }
         return null
     }
@@ -170,5 +171,10 @@ object MavenHandler {
         sb.append("runtime")
 
         return sb.toString()
+    }
+
+    private fun findDependencyScope(groupId : String, artifactId : String, version : String, packaging : String, classifier : String?, project: Project) : JvmDependencyScope {
+        val dep = MavenDependency(groupId, artifactId, version, packaging, classifier)
+        return project.application.jvm.dependencies.find { it == dep }?.scope ?: JvmDependencyScope.CLASSPATH
     }
 }

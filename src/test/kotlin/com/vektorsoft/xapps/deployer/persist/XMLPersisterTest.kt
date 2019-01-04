@@ -40,7 +40,7 @@ class XMLPersisterTest {
         val icon = BinaryData("/some/path", "icon.png", "12345566677", 1000)
         project.application.info.addIcon(icon)
 
-        val dependency = MavenDependency("some.group", "artifact", "1.0.0", "jar", null, "name.jar", "12345", 100)
+        val dependency = MavenDependency("some.group", "artifact", "1.0.0", "jar", null, "name.jar", "12345", 100, JvmDependencyScope.CLASSPATH)
         project.application.jvm.addDependency(dependency)
     }
 

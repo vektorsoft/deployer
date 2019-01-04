@@ -40,9 +40,9 @@ object ProjectPersistenceData {
         val rootNode = Preferences.userRoot().node(DEPLOYER_PREF_ROOT)
         for(location in rootNode.childrenNames()) {
             val projectNode = rootNode.node(location)
-            val location = projectNode.get(LOCATION_KEY, "")
-            if(location.isNotEmpty()) {
-                locations.add(location)
+            val loc = projectNode.get(LOCATION_KEY, "")
+            if(loc.isNotEmpty()) {
+                locations.add(loc)
             }
 
         }

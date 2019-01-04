@@ -28,13 +28,13 @@ import javax.xml.bind.annotation.*
 class Jvm(@XmlAttribute val version : String = "8") {
 
     @XmlTransient
-    val dependenciesProperty = SimpleListProperty<BinaryData>(FXCollections.observableArrayList())
-    var dependencies : List<BinaryData>
+    val dependenciesProperty = SimpleListProperty<JvmDependency>(FXCollections.observableArrayList())
+    var dependencies : List<JvmDependency>
     @XmlElementWrapper(name = "dependencies") @XmlElement(name = "dependency") get() = dependenciesProperty.get()
     set(value)  {
         dependenciesProperty.clear()
         dependenciesProperty.addAll(value)
     }
 
-    fun addDependency(dependency : BinaryData) = dependenciesProperty.add(dependency)
+    fun addDependency(dependency : JvmDependency) = dependenciesProperty.add(dependency)
 }
