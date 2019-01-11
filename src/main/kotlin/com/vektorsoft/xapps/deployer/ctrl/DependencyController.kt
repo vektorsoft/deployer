@@ -47,6 +47,14 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
     private lateinit var dependencyTable: TableView<MavenDependency>
     @FXML
     private lateinit var buttonBar: HBox
+    @FXML
+    private lateinit var platformButton : MenuButton
+    @FXML
+    private lateinit var osxMenuItem : MenuItem
+    @FXML
+    private lateinit var windowsMenuItem : MenuItem
+    @FXML
+    private lateinit var linuxMenuItem : MenuItem
 
     private val taskStatusProperty = SimpleBooleanProperty()
 
@@ -57,6 +65,14 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
         dependenciesPane.isVisible = true
         dependencyTable.selectionModel.selectionMode = SelectionMode.MULTIPLE
         dependencyTable.isEditable = true
+
+        dependencyTable.selectionModel.selectedItemProperty().addListener { _, _, newSel ->
+            platformButton.disableProperty().value = (newSel == null)
+        }
+
+        osxMenuItem.setOnAction { _ -> markDependencyAsPlatform(OperatingSystem.MAC_OS_X) }
+        windowsMenuItem.setOnAction { _ -> markDependencyAsPlatform(OperatingSystem.WINDOWS) }
+        linuxMenuItem.setOnAction { _ -> markDependencyAsPlatform(OperatingSystem.LINUX) }
     }
 
     override fun changed(
@@ -125,5 +141,11 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
         dependencyTable.columns.addAll(groupCol, artifactCol, versionCol, packagingCol, classifierCol, scopeCol)
         dependencyTable.items = FXCollections.observableList(deps.map { it as MavenDependency })
 
+    }
+
+    private fun markDependencyAsPlatform(os : OperatingSystem) {
+        val selectedItems = dependencyTable.selectionModel.selectedItems
+        RuntimeData.selectedProjectItem.get().project?.application?.jvm?.platformDependencies?.addPlatformSpecificDependency(selectedItems, os)
+        dependencyTable.items.removeAll(selectedItems)
     }
 }

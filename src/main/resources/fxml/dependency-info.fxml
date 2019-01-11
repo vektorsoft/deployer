@@ -45,11 +45,11 @@
       <HBox fx:id="buttonBar" alignment="CENTER" prefWidth="200.0" spacing="10.0">
          <children>
             <Button mnemonicParsing="false" text="Remove" />
-            <MenuButton disable="true" mnemonicParsing="false" text="Platform">
+            <MenuButton fx:id="platformButton" disable="true" mnemonicParsing="false" text="Platform">
               <items>
-                <MenuItem mnemonicParsing="false" text="Windows" />
-                <MenuItem mnemonicParsing="false" text="Mac OS X" />
-                  <MenuItem mnemonicParsing="false" text="Linux" />
+                <MenuItem fx:id="windowsMenuItem" mnemonicParsing="false" text="Windows" />
+                <MenuItem fx:id="osxMenuItem" mnemonicParsing="false" text="Mac OS X" />
+                  <MenuItem fx:id="linuxMenuItem" mnemonicParsing="false" text="Linux" />
               </items>
             </MenuButton>
          </children>

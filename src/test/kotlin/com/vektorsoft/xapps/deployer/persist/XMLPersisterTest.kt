@@ -23,6 +23,8 @@ import com.vektorsoft.xapps.deployer.model.*
 import org.junit.Before
 import org.junit.Test
 import java.io.File
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class XMLPersisterTest {
 
@@ -42,15 +44,24 @@ class XMLPersisterTest {
 
         val dependency = MavenDependency("some.group", "artifact", "1.0.0", "jar", null, "name.jar", "12345", 100, JvmDependencyScope.CLASSPATH)
         project.application.jvm.addDependency(dependency)
+
+        val macDependency = MavenDependency("com.group", "my-dep", "1.0.0", "jar", "mac", "my-dep-mac.jar", "abcdee", 1200, JvmDependencyScope.CLASSPATH)
+        val wincDependency = MavenDependency("com.group", "my-dep", "1.0.0", "jar", "windows", "my-dep-windows.jar", "abcdee1223", 1210, JvmDependencyScope.CLASSPATH)
+
+        project.application.jvm.platformDependencies.addPlatformSpecificDependency(listOf(macDependency), OperatingSystem.MAC_OS_X)
+        project.application.jvm.platformDependencies.addPlatformSpecificDependency(listOf(wincDependency), OperatingSystem.WINDOWS)
     }
 
     @Test
     fun testSerialization() {
-        println("tmpdir: ${project.location}")
         XMLPersister.writeProject(project)
 
         // load project back
-        val file = File(project.location, "deployer-config.xml")
         val out = XMLPersister.loadProject(project.location ?: return)
+
+        assertEquals(1, out.application.jvm.dependencies.size)
+        assertEquals(1, out.application.jvm.platformDependencies.getMacDependencies().size)
+        assertEquals(1, out.application.jvm.platformDependencies.getWindowsDependencies().size)
+        assertTrue(out.application.jvm.platformDependencies.getLinuxDependencies().isEmpty())
     }
 }

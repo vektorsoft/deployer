@@ -36,5 +36,11 @@ class Jvm(@XmlAttribute val version : String = "8") {
         dependenciesProperty.addAll(value)
     }
 
+    @XmlElement(name = "platform-specific-dependencies")
+    val platformDependencies = PlatformSpecificDependencies()
+
+
     fun addDependency(dependency : JvmDependency) = dependenciesProperty.add(dependency)
+
+
 }

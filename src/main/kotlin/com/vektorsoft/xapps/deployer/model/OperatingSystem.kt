@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Vladimir Djurovic
+ * Copyright (c) 2019. Vladimir Djurovic
  *
  * This file is part of Deployer.
  *
@@ -17,12 +17,8 @@
  * along with Deployer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@XmlJavaTypeAdapters({
-        @XmlJavaTypeAdapter(value = StringAdapter.class, type = String.class)
-})
-package com.vektorsoft.xapps.deployer.model;
+package com.vektorsoft.xapps.deployer.model
 
-import com.vektorsoft.xapps.deployer.persist.xml.StringAdapter;
-
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
+enum class OperatingSystem {
+    WINDOWS, LINUX, MAC_OS_X
+}

@@ -17,7 +17,7 @@
  * along with Deployer.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.vektorsoft.xapps.deployer.persist
+package com.vektorsoft.xapps.deployer.persist.xml
 
 import javax.xml.bind.annotation.adapters.XmlAdapter
 
