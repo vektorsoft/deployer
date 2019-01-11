@@ -98,6 +98,10 @@ class MainPageController : ListChangeListener<Project> {
                         detailsPane.center = UIRegistry.getComponent(UIRegistry.DEPENDENCY_INFO_PANE)
                         detailsPane.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
                     }
+                    ProjectItemType.PLATFORM_DEPENDENCIES -> {
+                        detailsPane.center = UIRegistry.getComponent(UIRegistry.PLATFORM_DEPENDENCY_PANE)
+                        detailsPane.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
+                    }
                 }
             }
         })

@@ -22,6 +22,7 @@ package com.vektorsoft.xapps.deployer.ctrl
 import com.vektorsoft.xapps.deployer.maven.DependencySyncTask
 import com.vektorsoft.xapps.deployer.model.*
 import com.vektorsoft.xapps.deployer.ui.ProjectTreeItem
+import com.vektorsoft.xapps.deployer.ui.fillMavenDependencyTable
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -90,7 +91,7 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
         if (!project.synced) {
             syncFromPom(project)
         } else {
-            fillDependencyTable(project)
+            fillMavenDependencyTable(project.application.jvm.dependencies, dependencyTable)
         }
     }
 
@@ -108,7 +109,7 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
                         buttonBar.isVisible = false
                     }
                     Worker.State.SUCCEEDED -> {
-                        fillDependencyTable(project)
+                        fillMavenDependencyTable(project.application.jvm.dependencies, dependencyTable)
                         dependenciesPane.toFront()
                         dependenciesPane.isVisible = true
                         buttonBar.isVisible = true
@@ -120,28 +121,6 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
         }
     }
 
-    private fun fillDependencyTable(project: Project) {
-        val deps = project.application.jvm.dependencies
-
-        val groupCol = TableColumn<MavenDependency, String>("Group ID")
-        groupCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("groupId")
-        val artifactCol = TableColumn<MavenDependency, String>("Artifact ID")
-        artifactCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("artifactId")
-        val versionCol = TableColumn<MavenDependency, String>("Version")
-        versionCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("version")
-        val packagingCol = TableColumn<MavenDependency, String>("Packaging")
-        packagingCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("packaging")
-        val classifierCol = TableColumn<MavenDependency, String>("Classifier")
-        classifierCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("classifier")
-        val scopeCol = TableColumn<MavenDependency, JvmDependencyScope>("Scope")
-        scopeCol.setCellValueFactory { it -> it.value.scopeProperty }
-        scopeCol.cellFactory = ComboBoxTableCell.forTableColumn(JvmDependencyScope.CLASSPATH, JvmDependencyScope.MODULE_PATH)
-        dependencyTable.columns.clear()
-
-        dependencyTable.columns.addAll(groupCol, artifactCol, versionCol, packagingCol, classifierCol, scopeCol)
-        dependencyTable.items = FXCollections.observableList(deps.map { it as MavenDependency })
-
-    }
 
     private fun markDependencyAsPlatform(os : OperatingSystem) {
         val selectedItems = dependencyTable.selectionModel.selectedItems

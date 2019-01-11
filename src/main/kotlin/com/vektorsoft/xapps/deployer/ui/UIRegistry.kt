@@ -36,6 +36,7 @@ object UIRegistry {
     const val PROJECT_BUTTON_BAR = "project_button_bar"
     const val APP_INFO_PANE = "app_info_pane"
     const val DEPENDENCY_INFO_PANE = "dependency_info_pane"
+    const val PLATFORM_DEPENDENCY_PANE = "platform_dependency_pane"
 
 
     private val componentMap = mutableMapOf<String, Parent>()
@@ -49,6 +50,7 @@ object UIRegistry {
         componentMap[PROJECT_BUTTON_BAR] = FXMLLoader.load(javaClass.getResource("/fxml/project-button-bar.fxml"))
         componentMap[APP_INFO_PANE] = FXMLLoader.load(javaClass.getResource("/fxml/app-info.fxml"))
         componentMap[DEPENDENCY_INFO_PANE] = FXMLLoader.load(javaClass.getResource("/fxml/dependency-info.fxml"))
+        componentMap[PLATFORM_DEPENDENCY_PANE] = FXMLLoader.load(javaClass.getResource("/fxml/platform-deps-info.fxml"))
 
         // load main window last, to make sure all children are loaded
         componentMap[MAIN_PAGE] = FXMLLoader.load<Parent>(javaClass.getResource("/fxml/main.fxml"))
