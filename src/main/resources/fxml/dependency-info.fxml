@@ -6,7 +6,6 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -17,17 +16,8 @@
 
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vektorsoft.xapps.deployer.ctrl.DependencyController">
    <children>
-      <StackPane>
+      <StackPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <ScrollPane fx:id="dependenciesPane" fitToWidth="true" prefHeight="345.0" prefWidth="600.0" visible="false">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0">
-                     <children>
-                        <TableView fx:id="dependencyTable" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </ScrollPane>
             <BorderPane fx:id="progressPane">
                <center>
                   <ProgressIndicator fx:id="syncProgressIndicator" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
@@ -40,6 +30,11 @@
                   </Label>
                </bottom>
             </BorderPane>
+          <AnchorPane fx:id="dependenciesPane" minHeight="0.0" minWidth="0.0">
+               <children>
+                  <TableView fx:id="dependencyTable" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
+               </children>
+            </AnchorPane>
          </children>
       </StackPane>
       <HBox fx:id="buttonBar" alignment="CENTER" prefWidth="200.0" spacing="10.0">

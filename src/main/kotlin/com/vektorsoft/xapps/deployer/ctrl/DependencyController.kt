@@ -32,6 +32,7 @@ import javafx.fxml.FXML
 import javafx.scene.control.*
 import javafx.scene.control.cell.ComboBoxTableCell
 import javafx.scene.control.cell.PropertyValueFactory
+import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 
@@ -41,7 +42,7 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
     @FXML
     private lateinit var progressPane: BorderPane
     @FXML
-    private lateinit var dependenciesPane: ScrollPane
+    private lateinit var dependenciesPane: AnchorPane
     @FXML
     private lateinit var syncProgressIndicator: ProgressIndicator
     @FXML
