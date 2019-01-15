@@ -46,7 +46,7 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
     @FXML
     private lateinit var syncProgressIndicator: ProgressIndicator
     @FXML
-    private lateinit var dependencyTable: TableView<MavenDependency>
+    private lateinit var dependencyTable: TableView<JvmDependency>
     @FXML
     private lateinit var buttonBar: HBox
     @FXML
@@ -92,7 +92,7 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
         if (!project.synced) {
             syncFromPom(project)
         } else {
-            fillMavenDependencyTable(project.application.jvm.dependencies, dependencyTable)
+            fillMavenDependencyTable(project.application.jvm.dependenciesProperty, dependencyTable)
         }
     }
 
@@ -110,7 +110,7 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
                         buttonBar.isVisible = false
                     }
                     Worker.State.SUCCEEDED -> {
-                        fillMavenDependencyTable(project.application.jvm.dependencies, dependencyTable)
+                        fillMavenDependencyTable(project.application.jvm.dependenciesProperty, dependencyTable)
                         dependenciesPane.toFront()
                         dependenciesPane.isVisible = true
                         buttonBar.isVisible = true

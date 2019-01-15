@@ -20,6 +20,7 @@
 package com.vektorsoft.xapps.deployer.ui
 
 import com.vektorsoft.xapps.deployer.ctrl.ControllerRegistry
+import com.vektorsoft.xapps.deployer.ctrl.NewMavenDependencyController
 import com.vektorsoft.xapps.deployer.ctrl.NewProjectDialogController
 import com.vektorsoft.xapps.deployer.ctrl.ProjectInfoController
 import javafx.fxml.FXMLLoader
@@ -37,6 +38,7 @@ object UIRegistry {
     const val APP_INFO_PANE = "app_info_pane"
     const val DEPENDENCY_INFO_PANE = "dependency_info_pane"
     const val PLATFORM_DEPENDENCY_PANE = "platform_dependency_pane"
+    const val ADD_MAVEN_DEPENDENCY_PANE = "add_maven_dependency_pane"
 
 
     private val componentMap = mutableMapOf<String, Parent>()
@@ -51,6 +53,7 @@ object UIRegistry {
         componentMap[APP_INFO_PANE] = FXMLLoader.load(javaClass.getResource("/fxml/app-info.fxml"))
         componentMap[DEPENDENCY_INFO_PANE] = FXMLLoader.load(javaClass.getResource("/fxml/dependency-info.fxml"))
         componentMap[PLATFORM_DEPENDENCY_PANE] = FXMLLoader.load(javaClass.getResource("/fxml/platform-deps-info.fxml"))
+        loadWithController("/fxml/maven-dependency-pane.fxml", NewMavenDependencyController::class.java, ADD_MAVEN_DEPENDENCY_PANE, bundle)
 
         // load main window last, to make sure all children are loaded
         componentMap[MAIN_PAGE] = FXMLLoader.load<Parent>(javaClass.getResource("/fxml/main.fxml"))

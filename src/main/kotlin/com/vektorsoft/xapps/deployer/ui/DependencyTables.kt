@@ -22,30 +22,30 @@ package com.vektorsoft.xapps.deployer.ui
 import com.vektorsoft.xapps.deployer.model.JvmDependency
 import com.vektorsoft.xapps.deployer.model.JvmDependencyScope
 import com.vektorsoft.xapps.deployer.model.MavenDependency
-import javafx.collections.FXCollections
+import javafx.beans.property.ListProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.cell.ComboBoxTableCell
-import javafx.scene.control.cell.PropertyValueFactory
 
-fun <T : JvmDependency> fillMavenDependencyTable(dependencies : List<T>, table : TableView<MavenDependency>) {
+fun fillMavenDependencyTable(dependencies : ListProperty<JvmDependency>, table : TableView<JvmDependency>) {
 
-    val groupCol = TableColumn<MavenDependency, String>("Group ID")
-    groupCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("groupId")
-    val artifactCol = TableColumn<MavenDependency, String>("Artifact ID")
-    artifactCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("artifactId")
-    val versionCol = TableColumn<MavenDependency, String>("Version")
-    versionCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("version")
-    val packagingCol = TableColumn<MavenDependency, String>("Packaging")
-    packagingCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("packaging")
-    val classifierCol = TableColumn<MavenDependency, String>("Classifier")
-    classifierCol.cellValueFactory = PropertyValueFactory<MavenDependency, String>("classifier")
-    val scopeCol = TableColumn<MavenDependency, JvmDependencyScope>("Scope")
+
+    val groupCol = TableColumn<JvmDependency, String>("Group ID")
+    groupCol.setCellValueFactory { SimpleObjectProperty<String>((it.value as MavenDependency).groupId) }
+    val artifactCol = TableColumn<JvmDependency, String>("Artifact ID")
+    artifactCol.setCellValueFactory { SimpleObjectProperty<String>((it.value as MavenDependency).artifactId) }
+    val versionCol = TableColumn<JvmDependency, String>("Version")
+    versionCol.setCellValueFactory { SimpleObjectProperty<String>((it.value as MavenDependency).version) }
+    val packagingCol = TableColumn<JvmDependency, String>("Packaging")
+    packagingCol.setCellValueFactory { SimpleObjectProperty<String>((it.value as MavenDependency).packaging) }
+    val classifierCol = TableColumn<JvmDependency, String>("Classifier")
+    classifierCol.setCellValueFactory { SimpleObjectProperty<String>((it.value as MavenDependency).classifier) }
+    val scopeCol = TableColumn<JvmDependency, JvmDependencyScope>("Scope")
     scopeCol.setCellValueFactory { it -> it.value.scopeProperty }
     scopeCol.cellFactory = ComboBoxTableCell.forTableColumn(JvmDependencyScope.CLASSPATH, JvmDependencyScope.MODULE_PATH)
     table.columns.clear()
 
     table.columns.addAll(groupCol, artifactCol, versionCol, packagingCol, classifierCol, scopeCol)
-    table.items = FXCollections.observableList(dependencies.map { it as MavenDependency })
-
+    table.itemsProperty().bindBidirectional(dependencies)
 }
