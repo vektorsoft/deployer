@@ -19,7 +19,6 @@
 
 package com.vektorsoft.xapps.deployer.ctrl
 
-import com.vektorsoft.xapps.deployer.maven.MavenHandler
 import com.vektorsoft.xapps.deployer.model.Project
 import com.vektorsoft.xapps.deployer.model.ProjectItemType
 import com.vektorsoft.xapps.deployer.model.RuntimeData
@@ -37,14 +36,16 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeView
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.layout.BorderPane
+import javafx.scene.layout.AnchorPane
 
 class MainPageController : ListChangeListener<Project> {
+
+    private val ANCHOR_DISTANCE = 10.0
 
     @FXML
     lateinit private var projectTree : TreeView<ProjectTreeItem>
     @FXML
-    lateinit private var detailsPane : BorderPane
+    lateinit private var detailsPane : AnchorPane
 
     // creadit: <div>Icons made by <a href="https://www.flaticon.com/authors/eucalyp" title="Eucalyp">Eucalyp</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
     private val treeRootIcon = ImageView(Image(javaClass.getResourceAsStream("/img/applications16x16.png")))
@@ -57,7 +58,7 @@ class MainPageController : ListChangeListener<Project> {
     @FXML
     fun initialize() {
         createProjectTree()
-        detailsPane.center = UIRegistry.getComponent(UIRegistry.START_PANE)
+        detailsPane.children.add(UIRegistry.getComponent(UIRegistry.START_PANE))
         RuntimeData.projectList.addListener(this)
     }
 
@@ -83,28 +84,37 @@ class MainPageController : ListChangeListener<Project> {
                 RuntimeData.selectedProjectItem.value = newValue?.value
                 when(newValue?.value?.type) {
                     ProjectItemType.ROOT -> {
-                        detailsPane.center =  UIRegistry.getComponent(UIRegistry.START_PANE)
-                        detailsPane.bottom = null
+                        detailsPane.children.clear()
+                        detailsPane.children.add(UIRegistry.getComponent(UIRegistry.START_PANE))
+                        AnchorPane.setTopAnchor(detailsPane.children[0], 0.0)
+                        AnchorPane.setLeftAnchor(detailsPane.children[0], 0.0)
+                        AnchorPane.setRightAnchor(detailsPane.children[0], 0.0)
+//                        detailsPane.bottom = null
                     }
                     ProjectItemType.PROJECT -> {
-                        detailsPane.center = UIRegistry.getComponent(UIRegistry.PROJECT_INFO_PANE)
-                        detailsPane.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
+                        setupDetailsPane(UIRegistry.PROJECT_INFO_PANE)
                     }
                     ProjectItemType.APPLICATION -> {
-                        detailsPane.center = UIRegistry.getComponent(UIRegistry.APP_INFO_PANE)
-                        detailsPane.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
+                        setupDetailsPane(UIRegistry.APP_INFO_PANE)
                     }
                     ProjectItemType.DEPENDENCIES -> {
-                        detailsPane.center = UIRegistry.getComponent(UIRegistry.DEPENDENCY_INFO_PANE)
-                        detailsPane.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
+                        setupDetailsPane(UIRegistry.DEPENDENCY_INFO_PANE)
                     }
                     ProjectItemType.PLATFORM_DEPENDENCIES -> {
-                        detailsPane.center = UIRegistry.getComponent(UIRegistry.PLATFORM_DEPENDENCY_PANE)
-                        detailsPane.bottom = UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR)
+                        setupDetailsPane(UIRegistry.PLATFORM_DEPENDENCY_PANE)
                     }
                 }
             }
         })
+    }
+
+    private fun setupDetailsPane(name : String) {
+        detailsPane.children.clear()
+        detailsPane.children.addAll(UIRegistry.getComponent(name), UIRegistry.getComponent(UIRegistry.PROJECT_BUTTON_BAR))
+        AnchorPane.setTopAnchor(detailsPane.children[0], ANCHOR_DISTANCE)
+        AnchorPane.setLeftAnchor(detailsPane.children[0], ANCHOR_DISTANCE)
+        AnchorPane.setRightAnchor(detailsPane.children[0], ANCHOR_DISTANCE)
+        AnchorPane.setBottomAnchor(detailsPane.children[1], ANCHOR_DISTANCE)
     }
 
 
