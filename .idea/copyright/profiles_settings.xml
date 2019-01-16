@@ -1,7 +1,7 @@
 <component name="CopyrightManager">
   <settings>
     <module2copyright>
-      <element module="kotlin_source" copyright="GPL_Deployer" />
+      <element module="kotlin_source" copyright="MPL_Deployer" />
     </module2copyright>
   </settings>
 </component>

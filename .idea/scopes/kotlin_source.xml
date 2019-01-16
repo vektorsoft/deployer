@@ -1,3 +1,3 @@
 <component name="DependencyValidationManager">
-  <scope name="kotlin_source" pattern="src:com.vektorsoft.xapps.deployer..*||test:com.vektorsoft.xapps..*" />
+  <scope name="kotlin_source" pattern="src:com.vektorsoft.xapps.deployer..*||test:com.vektorsoft.xapps..*||src:fxml.*||src:i18n.*" />
 </component>
