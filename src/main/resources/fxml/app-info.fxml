@@ -31,24 +31,27 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="66.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="91.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="91.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="87.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Application Name: " />
-            <Label text="Version:" GridPane.rowIndex="1" />
-            <Label text="Description" GridPane.rowIndex="2" />
+            <Label text="Version:" GridPane.rowIndex="2" />
+            <Label text="Description" GridPane.rowIndex="3" />
             <TextField fx:id="appNameField" prefHeight="27.0" prefWidth="271.0" GridPane.columnIndex="1" />
-            <TextField fx:id="appVersionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextArea fx:id="appDescriptionArea" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="Server: " GridPane.rowIndex="3" />
-            <ComboBox fx:id="serverCombo" prefHeight="27.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <CheckBox mnemonicParsing="false" text="From pom.xml" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" text="New Server..." GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField fx:id="appVersionField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextArea fx:id="appDescriptionArea" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Server: " GridPane.rowIndex="4" />
+            <ComboBox fx:id="serverCombo" prefHeight="27.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <CheckBox mnemonicParsing="false" text="From pom.xml" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button fx:id="newServerButton" mnemonicParsing="false" onAction="#addServer" text="New Server..." GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label text="Application ID: " GridPane.rowIndex="1" />
+            <TextField fx:id="appIdField" prefHeight="27.0" prefWidth="271.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <TitledPane text="Icons" VBox.vgrow="ALWAYS">
+      <TitledPane prefHeight="148.0" prefWidth="580.0" text="Icons" VBox.vgrow="ALWAYS">
          <content>
             <VBox fx:id="iconsBarArea" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>

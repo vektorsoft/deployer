@@ -8,11 +8,9 @@
 
 package com.vektorsoft.xapps.deployer.model
 
+import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
-import javax.xml.bind.annotation.XmlAccessType
-import javax.xml.bind.annotation.XmlAccessorType
-import javax.xml.bind.annotation.XmlAttribute
-import javax.xml.bind.annotation.XmlTransient
+import javax.xml.bind.annotation.*
 
 @XmlAccessorType(XmlAccessType.FIELD)
 class App {
@@ -27,6 +25,17 @@ class App {
     val info = AppInfo()
     val jvm = Jvm()
 
-    var server : Server? = null
+    @XmlTransient
+    val appIdProperty = SimpleStringProperty("")
+    @XmlAttribute(name = "application-id")
+    fun getAppId() = appIdProperty.get()
+    fun setAppId(value : String) = appIdProperty.set(value)
+
+
+    @XmlTransient
+    val serverProperty = SimpleObjectProperty<Server>()
+    @XmlElement
+    fun getServer() = serverProperty.get()
+    fun setServer(value : Server) = serverProperty.set(value)
 
 }

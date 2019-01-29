@@ -13,15 +13,15 @@ import com.vektorsoft.xapps.deployer.model.BinaryData
 import com.vektorsoft.xapps.deployer.model.ProjectItemType
 import com.vektorsoft.xapps.deployer.model.RuntimeData
 import com.vektorsoft.xapps.deployer.model.Server
+import com.vektorsoft.xapps.deployer.persist.ProjectPersistenceData
 import com.vektorsoft.xapps.deployer.ui.IconBar
 import com.vektorsoft.xapps.deployer.ui.ProjectTreeItem
 import com.vektorsoft.xapps.deployer.ui.UIRegistry
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
+import javafx.event.ActionEvent
 import javafx.fxml.FXML
-import javafx.scene.control.ComboBox
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import javafx.stage.FileChooser
 import java.io.File
@@ -37,12 +37,15 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
     private lateinit var serverCombo : ComboBox<Server>
     @FXML
     private lateinit var iconsBarArea : VBox
+    @FXML
+    private lateinit var appIdField : TextField
 
 
 
     @FXML
     fun initialize() {
         RuntimeData.selectedProjectItem.addListener(this)
+        serverCombo.items.addAll(ProjectPersistenceData.loadServers())
 
     }
 
@@ -50,17 +53,20 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
 
         if(oldValue?.type == ProjectItemType.APPLICATION) {
             appNameField.textProperty().unbindBidirectional(oldValue.project?.application?.info?.appNameProperty)
+            appIdField.textProperty().unbindBidirectional(oldValue.project?.application?.appIdProperty)
             appVersionField.textProperty().unbindBidirectional(oldValue.project?.application?.versionProperty)
             appDescriptionArea.textProperty().unbindBidirectional(oldValue.project?.application?.info?.descriptionProperty)
             iconsBarArea.children.remove(1, iconsBarArea.children.size) // remove children except 'Add' button
         }
         if(newValue?.type == ProjectItemType.APPLICATION) {
             appNameField.textProperty().bindBidirectional(newValue.project?.application?.info?.appNameProperty)
+            appIdField.textProperty().bindBidirectional(newValue.project?.application?.appIdProperty)
             appVersionField.textProperty().bindBidirectional(newValue.project?.application?.versionProperty)
             appDescriptionArea.textProperty().bindBidirectional(newValue.project?.application?.info?.descriptionProperty)
             for(binData in newValue.project?.application?.info?.icons ?: return) {
                 iconsBarArea.children.add(IconBar(binData.path, newValue.project?.location ?: "", iconsBarArea))
             }
+            serverCombo.valueProperty().bindBidirectional(newValue.project?.application?.serverProperty)
         }
     }
 
@@ -78,6 +84,26 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
             iconsBarArea.children.add(IconBar(file.absolutePath, projectLocation, iconsBarArea))
             RuntimeData.selectedProjectItem.get().project?.application?.info?.addIcon(BinaryData(filePathRelative(file.absolutePath, projectLocation), file.name, "123334455", file.length()))
         }
+    }
+
+    @FXML
+    fun addServer() {
+        val dialog = Dialog<Server?>()
+        dialog.title = "Add New Server"
+        dialog.dialogPane.buttonTypes.addAll(ButtonType.OK, ButtonType.CANCEL)
+        dialog.dialogPane.content = UIRegistry.getComponent(UIRegistry.ADD_SERVER_PANE)
+        dialog.resultConverter = ControllerRegistry.getController(AddServerController::class.java).getResultConverter()
+        dialog.dialogPane.lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION,  {
+            if(!ControllerRegistry.getController(AddServerController::class.java).validateInput()) {
+                it.consume()
+            }
+        })
+        val optServer = dialog.showAndWait()
+        if(optServer.isPresent) {
+            serverCombo.items.add(optServer.get())
+            serverCombo.selectionModel.select(optServer.get())
+        }
+
     }
 
     private fun iconExtensionFilters() : List<FileChooser.ExtensionFilter> {

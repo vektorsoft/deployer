@@ -11,11 +11,8 @@ package com.vektorsoft.xapps.deployer
 import com.vektorsoft.xapps.deployer.ctrl.ControllerRegistry
 import com.vektorsoft.xapps.deployer.ui.UIRegistry
 import javafx.application.Application
-import javafx.fxml.FXMLLoader
-import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
-import java.lang.Exception
 
 
 class Deployer : Application() {

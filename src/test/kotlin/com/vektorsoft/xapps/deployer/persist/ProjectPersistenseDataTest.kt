@@ -32,7 +32,7 @@ class ProjectPersistenseDataTest {
 
     @After
     fun tearDown() {
-        val rootNode = Preferences.userRoot().node(ProjectPersistenceData.DEPLOYER_PREF_ROOT)
+        val rootNode = Preferences.userRoot().node(ProjectPersistenceData.DEPLOYER_PROJECTS_ROOT)
         rootNode.removeNode()
         Preferences.userRoot().flush()
     }
@@ -42,7 +42,7 @@ class ProjectPersistenseDataTest {
         ProjectPersistenceData.saveProject(project1)
         ProjectPersistenceData.saveProject(project2)
 
-        val rootNode = Preferences.userRoot().node(ProjectPersistenceData.DEPLOYER_PREF_ROOT)
+        val rootNode = Preferences.userRoot().node(ProjectPersistenceData.DEPLOYER_PROJECTS_ROOT)
         val nodeNames = rootNode.childrenNames()
 
         assertEquals(2, nodeNames.size)
