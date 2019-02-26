@@ -10,11 +10,13 @@ package com.vektorsoft.xapps.deployer.ctrl
 
 import com.vektorsoft.xapps.deployer.model.Project
 import com.vektorsoft.xapps.deployer.model.RuntimeData
+import com.vektorsoft.xapps.deployer.persist.XMLPersister
 import com.vektorsoft.xapps.deployer.ui.UIRegistry
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.ButtonType
 import javafx.scene.control.Dialog
+import javafx.stage.DirectoryChooser
 
 class StartPaneController {
 
@@ -36,6 +38,17 @@ class StartPaneController {
         val result = dialog.showAndWait()
         if (result.isPresent) {
             RuntimeData.projectList.add(result.get())
+        }
+    }
+
+    @FXML
+    fun openProject() {
+        val dirChooser = DirectoryChooser()
+        val selectedDir = dirChooser.showDialog(UIRegistry.getMainWindow())
+
+        if(selectedDir != null) {
+            val project = XMLPersister.loadProject(selectedDir.absolutePath)
+            RuntimeData.projectList.add(project)
         }
     }
 

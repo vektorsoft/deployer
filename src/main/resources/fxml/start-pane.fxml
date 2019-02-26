@@ -14,6 +14,6 @@
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vektorsoft.xapps.deployer.ctrl.StartPaneController">
    <children>
       <Button fx:id="newProjectButton" mnemonicParsing="false" onAction="#createProject" text="%new.project.button" />
-      <Button fx:id="openProjectButton" mnemonicParsing="false" text="%open.project.button" />
+      <Button fx:id="openProjectButton" mnemonicParsing="false" onAction="#openProject" text="%open.project.button" />
    </children>
 </VBox>
