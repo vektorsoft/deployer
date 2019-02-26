@@ -8,6 +8,7 @@
 
 package com.vektorsoft.xapps.deployer.ctrl
 
+import com.vektorsoft.xapps.deployer.client.HashCalculator
 import com.vektorsoft.xapps.deployer.filePathRelative
 import com.vektorsoft.xapps.deployer.model.BinaryData
 import com.vektorsoft.xapps.deployer.model.ProjectItemType
@@ -82,7 +83,7 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
 
         for(file in selectedFiles ?: return) {
             iconsBarArea.children.add(IconBar(file.absolutePath, projectLocation, iconsBarArea))
-            RuntimeData.selectedProjectItem.get().project?.application?.info?.addIcon(BinaryData(filePathRelative(file.absolutePath, projectLocation), file.name, "123334455", file.length()))
+            RuntimeData.selectedProjectItem.get().project?.application?.info?.addIcon(BinaryData(filePathRelative(file.absolutePath, projectLocation), file.name, HashCalculator.fileHash(file), file.length()))
         }
     }
 

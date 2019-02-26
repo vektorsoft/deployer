@@ -72,7 +72,7 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
         newItem: ProjectTreeItem?
     ) {
         val project = newItem?.project ?: return
-        if (newItem?.type == ProjectItemType.DEPENDENCIES) {
+        if (newItem.type == ProjectItemType.DEPENDENCIES) {
             syncDependencies(project)
         }
     }
@@ -91,7 +91,7 @@ class DependencyController : ChangeListener<ProjectTreeItem> {
             taskStatusProperty.bind(task.runningProperty())
             syncProgressIndicator.progressProperty().bind(task.progressProperty())
             Thread(task).start()
-            task.stateProperty().addListener { observableValue, oldState, newState ->
+            task.stateProperty().addListener { _, _, newState ->
                 when (newState) {
                     Worker.State.RUNNING -> {
                         progressPane.toFront()

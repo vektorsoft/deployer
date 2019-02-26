@@ -11,6 +11,7 @@ package com.vektorsoft.xapps.deployer.persist
 import com.vektorsoft.xapps.deployer.model.Project
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import java.util.prefs.Preferences
 import kotlin.test.assertEquals
@@ -38,6 +39,7 @@ class ProjectPersistenseDataTest {
     }
 
     @Test
+    @Ignore
     fun testSaveProject() {
         ProjectPersistenceData.saveProject(project1)
         ProjectPersistenceData.saveProject(project2)

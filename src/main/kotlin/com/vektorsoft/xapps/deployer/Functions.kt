@@ -15,9 +15,6 @@ import java.io.FileInputStream
 import java.nio.file.Path
 import java.security.MessageDigest
 
-const val HASH_ALGORITHM = "SHA-1"
-const val BUFFER_SIZE = 8192
-
 fun filePathRelative(filePath : String, parent : String) : String {
     if(filePath.startsWith(parent)) {
         return filePath.substring(parent.length + 1)
@@ -31,35 +28,6 @@ fun getLocalMavenRepoDir() : File {
 }
 
 
-fun calculateFileHash(file : File) : String? {
-    try {
-        val digest = MessageDigest.getInstance(HASH_ALGORITHM)
-        FileInputStream(file).use {
-            val bytes = ByteArray(BUFFER_SIZE)
-            var read : Int = it.read(bytes)
-            while(read != -1) {
-                digest.update(bytes, 0 , read)
-                read = it.read(bytes)
-            }
-            val hashBytes = digest.digest()
-            return toHex(hashBytes)
-        }
-    } catch( ex : Exception) {
-        ex.printStackTrace()
-    }
-    return null
-}
-
-fun toHex(bytes : ByteArray) : String {
-    val hexString  = StringBuilder()
-    for (aMessageDigest:Byte in bytes) {
-        var h: String = Integer.toHexString(0xFF and aMessageDigest.toInt())
-        while (h.length < 2)
-            h = "0$h"
-        hexString.append(h)
-    }
-    return hexString.toString()
-}
 
 fun <T : Any> T.logger(clazz : Class<T>) : Lazy<Logger> {
     return lazy { LoggerFactory.getLogger(clazz) }

@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 
 <!--
   ~ Copyright (c) 2019. Vladimir Djurovic
@@ -22,28 +19,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vektorsoft.xapps.deployer.ctrl.PlatformDependenciesController">
    <children>
-      <VBox fx:id="footer" layoutY="350.0" prefHeight="69.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="350.0">
-         <children>
-            <HBox fx:id="progressArea" alignment="CENTER" prefHeight="20.0" prefWidth="200.0" spacing="15.0">
-               <children>
-                  <ProgressBar prefWidth="200.0" />
-                  <Label text="Resolving dependency..please wait" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <MenuButton mnemonicParsing="false" text="Add Platform Dependency">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Manual Dependency" />
-                      <MenuItem fx:id="mavenDependencyButton" mnemonicParsing="false" onAction="#newMavenDependency" text="Maven Dependnecy" />
-                    </items>
-                  </MenuButton>
-                  <Button mnemonicParsing="false" onAction="#removeDependency" text="Remove Selected" />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-      <TabPane fx:id="platformsTabPane" layoutX="120.0" layoutY="72.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane fx:id="platformsTabPane" layoutX="120.0" layoutY="72.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab id="windowsTab" text="Windows">
             <content>
@@ -74,5 +50,16 @@
             </Tab>
         </tabs>
       </TabPane>
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <MenuButton mnemonicParsing="false" text="Add Platform Dependency">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Manual Dependency" />
+                <MenuItem fx:id="mavenDependencyButton" mnemonicParsing="false" onAction="#newMavenDependency" text="Maven Dependnecy" />
+              </items>
+            </MenuButton>
+            <Button mnemonicParsing="false" onAction="#removeDependency" text="Remove Selected" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

@@ -25,7 +25,7 @@ class PlatformSpecificDependencies {
 
     fun setMacDependencies(value : List<JvmDependency>) {
         macDependenciesProperty.clear()
-        macDependenciesProperty.addAll()
+        macDependenciesProperty.addAll(value)
     }
 
 
@@ -37,7 +37,7 @@ class PlatformSpecificDependencies {
 
     fun setWindowsDependencies(value : List<JvmDependency>) {
         winDependenciesProperty.clear()
-        winDependenciesProperty.addAll()
+        winDependenciesProperty.addAll(value)
     }
 
     @XmlTransient

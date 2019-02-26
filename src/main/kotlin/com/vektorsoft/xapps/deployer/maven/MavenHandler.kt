@@ -8,7 +8,7 @@
 
 package com.vektorsoft.xapps.deployer.maven
 
-import com.vektorsoft.xapps.deployer.calculateFileHash
+import com.vektorsoft.xapps.deployer.client.HashCalculator
 import com.vektorsoft.xapps.deployer.getLocalMavenRepoDir
 import com.vektorsoft.xapps.deployer.logger
 import com.vektorsoft.xapps.deployer.model.JvmDependencyScope
@@ -111,7 +111,7 @@ object MavenHandler {
         if(result) {
             val name = createFileName(artifactId, version, classifier, packaging)
             logger.debug("Found dependency file at ${file.absolutePath}")
-            val hash = calculateFileHash(file) ?: "unknown"
+            val hash = HashCalculator.fileHash(file) ?: "unknown"
             return MavenDependency(groupId, artifactId, version, packaging, classifier, name, hash , file.length(), findDependencyScope(groupId, artifactId, version, packaging, classifier, project))
         }
         return null

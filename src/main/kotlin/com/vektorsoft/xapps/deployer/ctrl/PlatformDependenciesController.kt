@@ -39,10 +39,7 @@ class PlatformDependenciesController : ChangeListener<ProjectTreeItem> {
     private lateinit var winDependencyTable : TableView<JvmDependency>
     @FXML
     private lateinit var platformsTabPane : TabPane
-    @FXML
-    private lateinit var progressArea : HBox
-    @FXML
-    private lateinit var footer : VBox
+
 
     @FXML
     fun initialize() {
@@ -82,7 +79,6 @@ class PlatformDependenciesController : ChangeListener<ProjectTreeItem> {
         Platform.runLater {
             val project = RuntimeData.selectedProjectItem.get().project ?: null
             if(project != null && result != null) {
-                progressArea.visibleProperty().value = true
                 val dependency = MavenHandler.resolveDependency(result.get(), project)
                 logger.debug("Succesfully downloaded dependency {}", result.get())
                 val selectedId = platformsTabPane.selectionModel.selectedItem.id
@@ -91,7 +87,6 @@ class PlatformDependenciesController : ChangeListener<ProjectTreeItem> {
                     "macTab" -> project?.application?.jvm?.platformDependencies?.macDependenciesProperty?.add(dependency)
                     "linuxTab" -> project?.application?.jvm?.platformDependencies?.linuxDependenciesProperty?.add(dependency)
                 }
-                progressArea.visibleProperty().value = false
             }
         }
 
