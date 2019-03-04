@@ -61,6 +61,7 @@ class ProjectPersistenseDataTest {
     }
 
     @Test
+    @Ignore
     fun loadProjectsTest() {
         ProjectPersistenceData.saveProject(project1)
         ProjectPersistenceData.saveProject(project2)

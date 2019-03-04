@@ -8,12 +8,13 @@
 
 package com.vektorsoft.xapps.deployer.maven
 
-import com.vektorsoft.xapps.deployer.client.HashCalculator
 import com.vektorsoft.xapps.deployer.getLocalMavenRepoDir
 import com.vektorsoft.xapps.deployer.logger
 import com.vektorsoft.xapps.deployer.model.JvmDependencyScope
 import com.vektorsoft.xapps.deployer.model.MavenDependency
 import com.vektorsoft.xapps.deployer.model.Project
+import org.apache.commons.codec.digest.DigestUtils
+import org.apache.commons.codec.digest.MessageDigestAlgorithms
 import org.apache.maven.shared.invoker.DefaultInvocationRequest
 import org.apache.maven.shared.invoker.DefaultInvoker
 import org.apache.maven.shared.invoker.Invoker
@@ -27,6 +28,7 @@ import javax.xml.xpath.XPathFactory
 object MavenHandler {
 
     private val logger by logger(MavenHandler::class.java)
+    private val digestUtil = DigestUtils(MessageDigestAlgorithms.SHA_1)
     private val mavenInvoker : Invoker
 
     init {
@@ -111,7 +113,7 @@ object MavenHandler {
         if(result) {
             val name = createFileName(artifactId, version, classifier, packaging)
             logger.debug("Found dependency file at ${file.absolutePath}")
-            val hash = HashCalculator.fileHash(file) ?: "unknown"
+            val hash = digestUtil.digestAsHex(file) ?: "unknown"
             return MavenDependency(groupId, artifactId, version, packaging, classifier, name, hash , file.length(), findDependencyScope(groupId, artifactId, version, packaging, classifier, project))
         }
         return null

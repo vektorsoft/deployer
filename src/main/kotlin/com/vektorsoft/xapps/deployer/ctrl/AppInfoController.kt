@@ -8,7 +8,6 @@
 
 package com.vektorsoft.xapps.deployer.ctrl
 
-import com.vektorsoft.xapps.deployer.client.HashCalculator
 import com.vektorsoft.xapps.deployer.filePathRelative
 import com.vektorsoft.xapps.deployer.model.BinaryData
 import com.vektorsoft.xapps.deployer.model.ProjectItemType
@@ -25,9 +24,14 @@ import javafx.fxml.FXML
 import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import javafx.stage.FileChooser
+import org.apache.commons.codec.digest.DigestUtils
+import org.apache.commons.codec.digest.MessageDigestAlgorithms
 import java.io.File
 
 class AppInfoController : ChangeListener<ProjectTreeItem> {
+
+    private val digestUtil = DigestUtils(MessageDigestAlgorithms.SHA_1)
+
     @FXML
     private lateinit var appNameField : TextField
     @FXML
@@ -83,7 +87,7 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
 
         for(file in selectedFiles ?: return) {
             iconsBarArea.children.add(IconBar(file.absolutePath, projectLocation, iconsBarArea))
-            RuntimeData.selectedProjectItem.get().project?.application?.info?.addIcon(BinaryData(filePathRelative(file.absolutePath, projectLocation), file.name, HashCalculator.fileHash(file), file.length()))
+            RuntimeData.selectedProjectItem.get().project?.application?.info?.addIcon(BinaryData(filePathRelative(file.absolutePath, projectLocation), file.name, digestUtil.digestAsHex(file), file.length()))
         }
     }
 
