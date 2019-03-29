@@ -14,6 +14,6 @@
 <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vektorsoft.xapps.deployer.ctrl.ProjectButtonsController">
    <children>
       <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveProject" text="Save Project" />
-      <Button fx:id="deployButton" mnemonicParsing="false" text="Deploy Project" />
+      <Button fx:id="deployButton" mnemonicParsing="false" onAction="#deployProject" text="Deploy Project" />
    </children>
 </HBox>
