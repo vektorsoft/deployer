@@ -43,6 +43,7 @@ class MainPageController : ListChangeListener<Project> {
     private val platformDepIcon = Image(javaClass.getResourceAsStream("/img/platform_deps_16x16.png"))
     private val nativeLibIcon = Image(javaClass.getResourceAsStream("/img/binary_code_16x16.png"))
     private val applicationIcon = Image(javaClass.getResourceAsStream("/img/software_16x16.png"))
+    private val jvmIcon = Image(javaClass.getResourceAsStream("/img/jvm_16x16.png"))
 
     @FXML
     fun initialize() {
@@ -92,6 +93,9 @@ class MainPageController : ListChangeListener<Project> {
                     ProjectItemType.PLATFORM_DEPENDENCIES -> {
                         setupDetailsPane(UIRegistry.PLATFORM_DEPENDENCY_PANE)
                     }
+                    ProjectItemType.JVM -> {
+                        setupDetailsPane(UIRegistry.JVM_PROPERTIES_PANE)
+                    }
                 }
             }
         })
@@ -120,8 +124,10 @@ class MainPageController : ListChangeListener<Project> {
     private fun createProjectNode(project : Project) : TreeItem<ProjectTreeItem> {
         val projectNode = TreeItem(ProjectTreeItem(ProjectItemType.PROJECT, project), ImageView(projectIcon))
         projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.APPLICATION, project), ImageView(applicationIcon)))
-        projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.DEPENDENCIES, project), ImageView(dependencyIcon)))
-        projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.PLATFORM_DEPENDENCIES, project), ImageView(platformDepIcon)))
+        val jvmTreeItem = TreeItem(ProjectTreeItem(ProjectItemType.JVM, project), ImageView(jvmIcon))
+        projectNode.children.add(jvmTreeItem)
+        jvmTreeItem.children.add(TreeItem(ProjectTreeItem(ProjectItemType.DEPENDENCIES, project), ImageView(dependencyIcon)))
+        jvmTreeItem.children.add(TreeItem(ProjectTreeItem(ProjectItemType.PLATFORM_DEPENDENCIES, project), ImageView(platformDepIcon)))
         projectNode.children.add(TreeItem(ProjectTreeItem(ProjectItemType.NATIVE, project), ImageView(nativeLibIcon)))
 
         return projectNode

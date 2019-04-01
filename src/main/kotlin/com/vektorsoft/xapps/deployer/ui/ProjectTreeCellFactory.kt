@@ -31,6 +31,7 @@ class Converter : StringConverter<ProjectTreeItem>() {
             ProjectItemType.DEPENDENCIES -> return "Dependencies"
             ProjectItemType.PLATFORM_DEPENDENCIES -> return "Platform Dependencies"
             ProjectItemType.NATIVE -> return "Native Libraries"
+            ProjectItemType.JVM -> return "JVM"
             else -> return ""
 
         }

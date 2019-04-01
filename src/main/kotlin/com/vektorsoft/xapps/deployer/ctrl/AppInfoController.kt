@@ -9,6 +9,7 @@
 package com.vektorsoft.xapps.deployer.ctrl
 
 import com.vektorsoft.xapps.deployer.filePathRelative
+import com.vektorsoft.xapps.deployer.iconExtensionFilters
 import com.vektorsoft.xapps.deployer.model.BinaryData
 import com.vektorsoft.xapps.deployer.model.ProjectItemType
 import com.vektorsoft.xapps.deployer.model.RuntimeData
@@ -111,13 +112,6 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
 
     }
 
-    private fun iconExtensionFilters() : List<FileChooser.ExtensionFilter> {
-        return listOf(
-            FileChooser.ExtensionFilter("All Icons", "*.png", "*.ico", "*.icns"),
-            FileChooser.ExtensionFilter("PNG", ".png"),
-            FileChooser.ExtensionFilter("ICO", "*.ico"),
-            FileChooser.ExtensionFilter("ICNS", "*.icns")
-        )
-    }
+
 
 }

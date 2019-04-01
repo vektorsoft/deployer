@@ -8,4 +8,4 @@
 
 package com.vektorsoft.xapps.deployer.model
 
-enum class ProjectItemType {ROOT, PROJECT, APPLICATION, DEPENDENCIES, PLATFORM_DEPENDENCIES, NATIVE}
+enum class ProjectItemType {ROOT, PROJECT, APPLICATION, DEPENDENCIES, PLATFORM_DEPENDENCIES, NATIVE, JVM}

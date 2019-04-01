@@ -8,6 +8,7 @@
 
 package com.vektorsoft.xapps.deployer
 
+import javafx.stage.FileChooser
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -31,4 +32,13 @@ fun getLocalMavenRepoDir() : File {
 
 fun <T : Any> T.logger(clazz : Class<T>) : Lazy<Logger> {
     return lazy { LoggerFactory.getLogger(clazz) }
+}
+
+fun iconExtensionFilters() : List<FileChooser.ExtensionFilter> {
+    return listOf(
+        FileChooser.ExtensionFilter("All Icons", "*.png", "*.ico", "*.icns"),
+        FileChooser.ExtensionFilter("PNG", ".png"),
+        FileChooser.ExtensionFilter("ICO", "*.ico"),
+        FileChooser.ExtensionFilter("ICNS", "*.icns")
+    )
 }
