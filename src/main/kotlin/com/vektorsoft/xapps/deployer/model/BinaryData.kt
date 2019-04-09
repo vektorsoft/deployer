@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlAttribute
 
 
 open class BinaryData(@XmlAttribute val path : String = "",
-                      @XmlAttribute val fileName : String = "",
+                      @XmlAttribute(name = "file-name") val fileName : String = "",
                       @XmlAttribute val hash : String = "",
                       @XmlAttribute val size : Long = 0) {
 

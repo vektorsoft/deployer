@@ -14,8 +14,8 @@ import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlAttribute
 
 //@XmlAccessorType(XmlAccessType.FIELD)
-class MavenDependency(@XmlAttribute var groupId : String = "",
-                      @XmlAttribute var artifactId : String = "",
+class MavenDependency(@XmlAttribute(name = "group-id") var groupId : String = "",
+                      @XmlAttribute(name = "artifact-id") var artifactId : String = "",
                       @XmlAttribute var version : String = "",
                       @XmlAttribute var packaging : String = "jar",
                       @XmlAttribute var classifier : String? = null, name : String = "", fileHash : String = "", fileSize : Long = 0, scope: JvmDependencyScope = JvmDependencyScope.CLASSPATH)
