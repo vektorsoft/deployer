@@ -28,6 +28,7 @@ import javafx.stage.FileChooser
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.codec.digest.MessageDigestAlgorithms
 import java.io.File
+import java.util.*
 
 class AppInfoController : ChangeListener<ProjectTreeItem> {
 
@@ -46,12 +47,15 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
     @FXML
     private lateinit var appIdField : TextField
 
+    private lateinit var resourceBundle: ResourceBundle
+
 
 
     @FXML
     fun initialize() {
         RuntimeData.selectedProjectItem.addListener(this)
         serverCombo.items.addAll(ProjectPersistenceData.loadServers())
+        resourceBundle = ResourceBundle.getBundle("i18n/strings")
 
     }
 
@@ -95,7 +99,7 @@ class AppInfoController : ChangeListener<ProjectTreeItem> {
     @FXML
     fun addServer() {
         val dialog = Dialog<Server?>()
-        dialog.title = "Add New Server"
+        dialog.title = resourceBundle.getString("app.newServer")
         dialog.dialogPane.buttonTypes.addAll(ButtonType.OK, ButtonType.CANCEL)
         dialog.dialogPane.content = UIRegistry.getComponent(UIRegistry.ADD_SERVER_PANE)
         dialog.resultConverter = ControllerRegistry.getController(AddServerController::class.java).getResultConverter()

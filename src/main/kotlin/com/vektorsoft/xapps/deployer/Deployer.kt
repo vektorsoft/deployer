@@ -13,6 +13,7 @@ import com.vektorsoft.xapps.deployer.ui.UIRegistry
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.stage.Stage
+import java.awt.SplashScreen
 
 
 class Deployer : Application() {
@@ -26,6 +27,9 @@ class Deployer : Application() {
         stage.title = "Deployer"
         stage.scene = scene
         stage.show()
+
+        val splash = SplashScreen.getSplashScreen() ?: return
+        splash.close()
     }
 }
 

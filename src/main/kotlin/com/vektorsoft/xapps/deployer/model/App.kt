@@ -38,4 +38,10 @@ class App {
     fun getServer() = serverProperty.get()
     fun setServer(value : Server) = serverProperty.set(value)
 
+    @XmlTransient
+    val argumentsProperty = SimpleObjectProperty<String>()
+    var arguments : String?
+        @XmlElement(name = "args") get() = argumentsProperty.get()
+        set(value) = argumentsProperty.set(value)
+
 }
