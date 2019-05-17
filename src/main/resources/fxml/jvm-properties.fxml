@@ -44,8 +44,8 @@
                         <ComboBox fx:id="jdkVersionCombo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="3" GridPane.rowIndex="2">
                            <children>
-                              <CheckBox mnemonicParsing="false" text="Exact version" />
-                              <TextField disable="true" />
+                              <CheckBox fx:id="exactVersionCb" mnemonicParsing="false" onAction="#processExactVersion" text="Exact version" />
+                              <TextField fx:id="exactVersionField" disable="true" />
                            </children>
                         </HBox>
                      </children>
@@ -94,7 +94,7 @@
                      </top>
                   </BorderPane>
                   <Label text="Arguments:" GridPane.rowIndex="3" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="argumentsTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
          </content>

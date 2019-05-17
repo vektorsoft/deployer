@@ -17,6 +17,7 @@ import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
+import javafx.scene.control.CheckBox
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
@@ -42,6 +43,8 @@ class JvmDataController : ChangeListener<ProjectTreeItem> {
     @FXML
     private lateinit var sysPropertiesTextArea: TextArea
     @FXML
+    private lateinit var argumentsTextField : TextField
+    @FXML
     private lateinit var splashScreenImgPane : BorderPane
     @FXML
     private lateinit var providerCombo : ComboBox<JdkProvider>
@@ -51,6 +54,10 @@ class JvmDataController : ChangeListener<ProjectTreeItem> {
     private lateinit var binaryTypeCombo : ComboBox<JdkBinaryType>
     @FXML
     private lateinit var jdkVersionCombo : ComboBox<JdkVersion>
+    @FXML
+    private lateinit var exactVersionCb : CheckBox
+    @FXML
+    private lateinit var exactVersionField : TextField
 
     @FXML
     fun initialize() {
@@ -66,16 +73,19 @@ class JvmDataController : ChangeListener<ProjectTreeItem> {
             mainClassField.textProperty().unbindBidirectional(oldValue.project?.application?.jvm?.mainClassProperty)
             jvmOptionsTextArea.textProperty().unbindBidirectional(oldValue.project?.application?.jvm?.jvmOptionsProperty)
             sysPropertiesTextArea.textProperty().unbindBidirectional(oldValue.project?.application?.jvm?.sysPropertiesProperty)
+            argumentsTextField.textProperty().unbindBidirectional(oldValue.project?.application?.jvm?.argumentsProperty)
             splashScreenImgPane.center = null
             providerCombo.valueProperty().unbindBidirectional(oldValue.project?.application?.jvm?.jdkProviderProperty)
             jvmImplementationCombo.valueProperty().unbindBidirectional(oldValue.project?.application?.jvm?.jvmImplementationProperty)
             binaryTypeCombo.valueProperty().unbindBidirectional(oldValue.project?.application?.jvm?.binaryTypeProperty)
             jdkVersionCombo.valueProperty().unbindBidirectional(oldValue.project?.application?.jvm?.jdkVersionProperty)
+            exactVersionField.textProperty().unbindBidirectional(oldValue.project?.application?.jvm?.exactVersionProperty)
         }
         if(newValue?.type == ProjectItemType.JVM) {
             mainClassField.textProperty().bindBidirectional(newValue.project?.application?.jvm?.mainClassProperty)
             jvmOptionsTextArea.textProperty().bindBidirectional(newValue.project?.application?.jvm?.jvmOptionsProperty)
             sysPropertiesTextArea.textProperty().bindBidirectional(newValue.project?.application?.jvm?.sysPropertiesProperty)
+            argumentsTextField.textProperty().bindBidirectional(newValue.project?.application?.jvm?.argumentsProperty)
             val projectLocation = newValue.project?.location ?: return
             val splashScreenPath = newValue.project?.application?.jvm?.splashScreen?.path ?: return
             splashScreenImgPane.center = ImageView(Image(getIconFile(splashScreenPath, projectLocation).inputStream(), SPLASH_PREVIEW_WIDTH, SPLASH_PREVIEW_HEIGHT, false, false))
@@ -83,6 +93,8 @@ class JvmDataController : ChangeListener<ProjectTreeItem> {
             jvmImplementationCombo.valueProperty().bindBidirectional(newValue.project?.application?.jvm?.jvmImplementationProperty)
             binaryTypeCombo.valueProperty().bindBidirectional(newValue.project?.application?.jvm?.binaryTypeProperty)
             jdkVersionCombo.valueProperty().bindBidirectional(newValue.project?.application?.jvm?.jdkVersionProperty)
+            exactVersionField.textProperty().bindBidirectional(newValue.project?.application?.jvm?.exactVersionProperty)
+            initExactVersion(newValue.project?.application?.jvm)
         }
     }
 
@@ -106,6 +118,16 @@ class JvmDataController : ChangeListener<ProjectTreeItem> {
         RuntimeData.selectedProjectItem.get().project?.application?.jvm?.splashScreen = null
     }
 
+    @FXML
+    fun processExactVersion() {
+        if(exactVersionCb.isSelected) {
+            exactVersionField.disableProperty().value = false
+        } else {
+            exactVersionField.clear()
+            exactVersionField.disableProperty().value = true
+        }
+    }
+
     private fun getIconFile(path : String, projectLocation: String) : File {
         val p = Paths.get(path)
         if(p.isAbsolute) {
@@ -114,4 +136,16 @@ class JvmDataController : ChangeListener<ProjectTreeItem> {
             return File(projectLocation, path)
         }
     }
+
+    private fun initExactVersion(jvm : Jvm?) {
+        if(jvm?.exactVersion.isNullOrEmpty()) {
+            exactVersionField.disableProperty().value = true
+            exactVersionCb.selectedProperty().value = false
+        } else {
+            exactVersionCb.selectedProperty().value = true
+            exactVersionField.disableProperty().value = false
+
+        }
+    }
+
 }

@@ -13,7 +13,6 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javax.xml.bind.annotation.*
 
-const val DEFAULT_JDK_VERSION = "11"
 
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @XmlSeeAlso(MavenDependency::class)
@@ -55,6 +54,12 @@ class Jvm {
         get() = splashScreenProperty.get()
 
     @XmlTransient
+    val argumentsProperty = SimpleObjectProperty<String>()
+    var arguments : String?
+    @XmlElement set(value) = argumentsProperty.set(value)
+    get() = argumentsProperty.get()
+
+    @XmlTransient
     val jdkProviderProperty = SimpleObjectProperty<JdkProvider>(JdkProvider.OPENJDK)
     var provider : JdkProvider
     @XmlAttribute set(value) = jdkProviderProperty.set(value)
@@ -77,6 +82,12 @@ class Jvm {
     var version : JdkVersion
     @XmlAttribute set(value) = jdkVersionProperty.set(value)
     get() = jdkVersionProperty.get()
+
+    @XmlTransient
+    val exactVersionProperty = SimpleObjectProperty<String>("")
+    var exactVersion : String
+    @XmlAttribute(name = "exact-version") set(value) = exactVersionProperty.set(value)
+    get() = exactVersionProperty.get()
 
 
     fun addDependency(dependency : JvmDependency) = dependenciesProperty.add(dependency)
