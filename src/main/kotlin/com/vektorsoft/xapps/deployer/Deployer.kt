@@ -23,7 +23,7 @@ class Deployer : Application() {
         UIRegistry.loadComponents()
         UIRegistry.setMainWindow(stage ?: throw Exception("Stage can not be null"))
 
-        val scene = Scene(UIRegistry.getComponent(UIRegistry.MAIN_PAGE), 800.0, 600.0)
+        val scene = Scene(UIRegistry.getComponent(UIRegistry.MAIN_PAGE), 900.0, 700.0)
         stage.title = "Deployer"
         stage.scene = scene
         stage.show()

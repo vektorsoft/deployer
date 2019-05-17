@@ -13,9 +13,11 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javax.xml.bind.annotation.*
 
+const val DEFAULT_JDK_VERSION = "11"
+
 @XmlAccessorType(XmlAccessType.PROPERTY)
 @XmlSeeAlso(MavenDependency::class)
-class Jvm(@XmlAttribute val version : String = "8") {
+class Jvm {
 
     @XmlTransient
     val dependenciesProperty = SimpleListProperty<JvmDependency>(FXCollections.observableArrayList())
@@ -51,6 +53,30 @@ class Jvm(@XmlAttribute val version : String = "8") {
     var splashScreen : BinaryData?
         @XmlElement(name = "splash-screen") set(value) = splashScreenProperty.set(value)
         get() = splashScreenProperty.get()
+
+    @XmlTransient
+    val jdkProviderProperty = SimpleObjectProperty<JdkProvider>(JdkProvider.OPENJDK)
+    var provider : JdkProvider
+    @XmlAttribute set(value) = jdkProviderProperty.set(value)
+    get() = jdkProviderProperty.get()
+
+    @XmlTransient
+    val jvmImplementationProperty = SimpleObjectProperty<JvmImplementation>(JvmImplementation.HOTSPOT)
+    var implementation : JvmImplementation
+    @XmlAttribute set(value) = jvmImplementationProperty.set(value)
+    get() = jvmImplementationProperty.get()
+
+    @XmlTransient
+    val binaryTypeProperty = SimpleObjectProperty<JdkBinaryType>(JdkBinaryType.JRE)
+    var binaryType : JdkBinaryType
+    @XmlAttribute(name = "binary-type") set(value) = binaryTypeProperty.set(value)
+    get() = binaryTypeProperty.get()
+
+    @XmlTransient
+    val jdkVersionProperty = SimpleObjectProperty<JdkVersion>(JdkVersion.JDK_11)
+    var version : JdkVersion
+    @XmlAttribute set(value) = jdkVersionProperty.set(value)
+    get() = jdkVersionProperty.get()
 
 
     fun addDependency(dependency : JvmDependency) = dependenciesProperty.add(dependency)

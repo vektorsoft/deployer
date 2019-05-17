@@ -8,9 +8,11 @@
 
 @XmlJavaTypeAdapters({
         @XmlJavaTypeAdapter(value = StringAdapter.class, type = String.class)
+        //@XmlJavaTypeAdapter(value = JdkVersionAdapter.class, type = JdkVersion.class)
 })
 package com.vektorsoft.xapps.deployer.model;
 
+import com.vektorsoft.xapps.deployer.persist.xml.JdkVersionAdapter;
 import com.vektorsoft.xapps.deployer.persist.xml.StringAdapter;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;

@@ -10,14 +10,14 @@ package com.vektorsoft.xapps.deployer.ctrl
 
 import com.vektorsoft.xapps.deployer.filePathRelative
 import com.vektorsoft.xapps.deployer.iconExtensionFilters
-import com.vektorsoft.xapps.deployer.model.BinaryData
-import com.vektorsoft.xapps.deployer.model.ProjectItemType
-import com.vektorsoft.xapps.deployer.model.RuntimeData
+import com.vektorsoft.xapps.deployer.model.*
 import com.vektorsoft.xapps.deployer.ui.ProjectTreeItem
 import com.vektorsoft.xapps.deployer.ui.UIRegistry
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
+import javafx.collections.FXCollections
 import javafx.fxml.FXML
+import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
@@ -43,10 +43,22 @@ class JvmDataController : ChangeListener<ProjectTreeItem> {
     private lateinit var sysPropertiesTextArea: TextArea
     @FXML
     private lateinit var splashScreenImgPane : BorderPane
+    @FXML
+    private lateinit var providerCombo : ComboBox<JdkProvider>
+    @FXML
+    private lateinit var jvmImplementationCombo : ComboBox<JvmImplementation>
+    @FXML
+    private lateinit var binaryTypeCombo : ComboBox<JdkBinaryType>
+    @FXML
+    private lateinit var jdkVersionCombo : ComboBox<JdkVersion>
 
     @FXML
     fun initialize() {
         RuntimeData.selectedProjectItem.addListener(this)
+        providerCombo.items = FXCollections.observableList(JdkProvider.values().toList())
+        jvmImplementationCombo.items = FXCollections.observableList(JvmImplementation.values().toList())
+        binaryTypeCombo.items = FXCollections.observableList(JdkBinaryType.values().toList())
+        jdkVersionCombo.items = FXCollections.observableList(JdkVersion.values().toList())
     }
 
     override fun changed(observable: ObservableValue<out ProjectTreeItem>?, oldValue: ProjectTreeItem?, newValue: ProjectTreeItem?) {
@@ -55,6 +67,10 @@ class JvmDataController : ChangeListener<ProjectTreeItem> {
             jvmOptionsTextArea.textProperty().unbindBidirectional(oldValue.project?.application?.jvm?.jvmOptionsProperty)
             sysPropertiesTextArea.textProperty().unbindBidirectional(oldValue.project?.application?.jvm?.sysPropertiesProperty)
             splashScreenImgPane.center = null
+            providerCombo.valueProperty().unbindBidirectional(oldValue.project?.application?.jvm?.jdkProviderProperty)
+            jvmImplementationCombo.valueProperty().unbindBidirectional(oldValue.project?.application?.jvm?.jvmImplementationProperty)
+            binaryTypeCombo.valueProperty().unbindBidirectional(oldValue.project?.application?.jvm?.binaryTypeProperty)
+            jdkVersionCombo.valueProperty().unbindBidirectional(oldValue.project?.application?.jvm?.jdkVersionProperty)
         }
         if(newValue?.type == ProjectItemType.JVM) {
             mainClassField.textProperty().bindBidirectional(newValue.project?.application?.jvm?.mainClassProperty)
@@ -63,6 +79,10 @@ class JvmDataController : ChangeListener<ProjectTreeItem> {
             val projectLocation = newValue.project?.location ?: return
             val splashScreenPath = newValue.project?.application?.jvm?.splashScreen?.path ?: return
             splashScreenImgPane.center = ImageView(Image(getIconFile(splashScreenPath, projectLocation).inputStream(), SPLASH_PREVIEW_WIDTH, SPLASH_PREVIEW_HEIGHT, false, false))
+            providerCombo.valueProperty().bindBidirectional(newValue.project?.application?.jvm?.jdkProviderProperty)
+            jvmImplementationCombo.valueProperty().bindBidirectional(newValue.project?.application?.jvm?.jvmImplementationProperty)
+            binaryTypeCombo.valueProperty().bindBidirectional(newValue.project?.application?.jvm?.binaryTypeProperty)
+            jdkVersionCombo.valueProperty().bindBidirectional(newValue.project?.application?.jvm?.jdkVersionProperty)
         }
     }
 
