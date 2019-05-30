@@ -17,14 +17,12 @@ import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
-import javafx.scene.control.CheckBox
-import javafx.scene.control.ComboBox
-import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import javafx.stage.FileChooser
+import javafx.util.Callback
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.codec.digest.MessageDigestAlgorithms
 import java.io.File
@@ -66,6 +64,8 @@ class JvmDataController : ChangeListener<ProjectTreeItem> {
         jvmImplementationCombo.items = FXCollections.observableList(JvmImplementation.values().toList())
         binaryTypeCombo.items = FXCollections.observableList(JdkBinaryType.values().toList())
         jdkVersionCombo.items = FXCollections.observableList(JdkVersion.values().toList())
+        jdkVersionCombo.buttonCell = JdkVersionListCell()
+        jdkVersionCombo.cellFactory = Callback {  JdkVersionListCell() }
     }
 
     override fun changed(observable: ObservableValue<out ProjectTreeItem>?, oldValue: ProjectTreeItem?, newValue: ProjectTreeItem?) {
@@ -145,6 +145,17 @@ class JvmDataController : ChangeListener<ProjectTreeItem> {
             exactVersionCb.selectedProperty().value = true
             exactVersionField.disableProperty().value = false
 
+        }
+    }
+
+    class JdkVersionListCell : ListCell<JdkVersion>() {
+        override fun updateItem(item: JdkVersion?, empty: Boolean) {
+            super.updateItem(item, empty)
+            if(item != null && !empty) {
+                text = item.display
+            } else {
+                text = null
+            }
         }
     }
 
